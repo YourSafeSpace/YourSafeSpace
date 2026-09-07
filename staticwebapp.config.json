@@ -1,0 +1,11 @@
+{
+  "routes": [
+    {
+      "route": "/",
+      "rewrite": "/Your Safe Space - Under Construction.html"
+    }
+  ],
+  "navigationFallback": {
+    "rewrite": "/home.html"
+  }
+}
