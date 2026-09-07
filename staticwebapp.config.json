@@ -2,10 +2,10 @@
   "routes": [
     {
       "route": "/",
-      "rewrite": "/Your Safe Space - Under Construction.html"
+      "rewrite": "/under-construction.html"
     }
   ],
   "navigationFallback": {
-    "rewrite": "/home.html"
+    "rewrite": "/under-construction.html"
   }
 }
