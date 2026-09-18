@@ -1,0 +1,43 @@
+.DS_Store
+
+# Internal planning / print documents (not part of the public site)
+*.doc
+*.dc.html
+Anmeldeformular*
+Brand Summary*
+Mobile Adaptation Brief.md
+Under Construction.dc.html
+Website Review*
+Wegbeschreibung*
+Workbook*
+Your Safe Space - Under Construction.html
+Zitat-Schriften.dc.html
+doc-page.js
+sage-vergleich.png
+plakette/
+uploads/
+screenshots/
+
+# Unused source images (not referenced by index.html)
+assets/angebote-foto-laptop.jpg
+assets/angebote-foto-v2.jpg
+assets/angebote-foto.jpg
+assets/hero-portrait-neu.jpg
+assets/hero-portrait.png
+assets/konditionen-foto.jpg
+assets/logo-yss-creme.png
+assets/logo-yss-wide.png
+assets/logo-yss.png
+assets/qr-website.png
+assets/sgfb-logo.png
+assets/weg-1-platz.png
+assets/weg-2-eingang.jpeg
+assets/weg-3-tuere-zu.jpeg
+assets/weg-4-tuere-offen.jpeg
+assets/weg-5-hintergebaeude.jpeg
+assets/weg-6-wendeltreppe.jpeg
+assets/whatsapp-profil-2.png
+assets/whatsapp-profil-a.png
+assets/whatsapp-profil-b.png
+assets/whatsapp-profil-c.png
+assets/yss-logo.png
