@@ -46,6 +46,13 @@
     [data-r="form-2col"]{grid-template-columns:1fr !important}
     [data-r="footer-grid"]{grid-template-columns:1fr !important}
     [data-r="body-copy"] > p, [data-r="body-copy-p"]{font-size:15.5px !important;line-height:1.62 !important}
+    [data-r="format-split"]{grid-template-columns:1fr !important}
+    [data-r="format-split"] > div:first-child{order:2 !important}
+    [data-r="format-split"] > div:last-child{order:1 !important}
+    [data-r="kond-split"]{grid-template-columns:1fr !important;gap:32px !important}
+    [data-r="kond-photo-wrap"]{position:static !important;top:auto !important}
+    [data-r="footer-logo-wrap"]{align-items:center !important}
+    [data-r="footer-legal-row"]{flex-direction:column !important;align-items:flex-start !important}
   }
   @media (max-width:480px){
     [data-r="werdegang-row"]{grid-template-columns:1fr !important;gap:4px !important}
@@ -232,7 +239,7 @@
     </section>
 
     <!-- FORMAT -->
-    <section style="display:grid;grid-template-columns:1fr 1fr;align-items:stretch;">
+    <section data-r="format-split" style="display:grid;grid-template-columns:1fr 1fr;align-items:stretch;">
       <div data-r="collage-wrap" style="background:#EDE9DE;display:flex;align-items:center;justify-content:center;padding:60px;min-height:560px;">
         <div data-r="collage" style="display:flex;flex-direction:column;gap:14px;width:100%;max-width:380px;">
           <img src="assets/foto-praxis.png" alt="Beratungsraum" style="width:100%;height:200px;object-fit:cover;display:block;" />
@@ -425,7 +432,7 @@
     </div>
     </section>
 
-    <section style="max-width:1080px;margin:0 auto;padding:var(--py-k) var(--pad-x) var(--py-h);display:grid;grid-template-columns:1.55fr .85fr;gap:64px;align-items:start;">
+    <section data-r="kond-split" style="max-width:1080px;margin:0 auto;padding:var(--py-k) var(--pad-x) var(--py-h);display:grid;grid-template-columns:1.55fr .85fr;gap:64px;align-items:start;">
       <div>
         <sc-for list="{{ konditionen }}" as="k" hint-placeholder-count="3">
           <div data-r="kond-row" style="display:grid;grid-template-columns:200px 1fr;gap:36px;padding:34px 0;border-top:1px solid #E7E1D6;align-items:start;">
@@ -441,7 +448,7 @@
           </div>
         </sc-for>
       </div>
-      <div style="position:sticky;top:120px;">
+      <div data-r="kond-photo-wrap" style="position:sticky;top:120px;">
         <img src="assets/konditionen-foto-v2.jpg" alt="Silvia Soret" style="width:100%;height:auto;display:block;" />
       </div>
     </section>
@@ -654,7 +661,7 @@
           <div><a href="mailto:silvia@yoursafespace.ch" style="color:inherit;text-decoration:none;">silvia@yoursafespace.ch</a></div>
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;justify-content:center;align-items:flex-end;">
+      <div data-r="footer-logo-wrap" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-end;">
         <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;">
           <button onClick="{{ goHome }}" title="Zur Startseite" style="background:none;border:none;padding:0;cursor:pointer;display:block;">
             <img src="assets/logo-yss-eucalyptus.png" alt="Your Safe Space" style="width:130px;height:auto;display:block;" />
@@ -664,7 +671,7 @@
       </div>
     </div>
     <div style="border-top:1px solid rgba(63,72,57,.18);">
-      <div style="max-width:1320px;margin:0 auto;padding:16px var(--pad-x);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:11px;color:#5c6553;">
+      <div data-r="footer-legal-row" style="max-width:1320px;margin:0 auto;padding:16px var(--pad-x);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:11px;color:#5c6553;">
         <div>© 2026 Your Safe Space · Zürich</div>
         <div style="display:flex;gap:26px;flex-wrap:wrap;">
           <a href="https://www.alinaeiberle.de/" target="_blank" rel="noopener" style="color:#5c6553;text-decoration:none;">{{ t.fotografie }}</a>
