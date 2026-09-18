@@ -22,9 +22,10 @@
     header img{height:56px !important}
     [data-r="header-row"]{padding:6px var(--pad-x) !important;gap:16px !important}
     [data-r="hero"]{grid-template-columns:1fr !important;min-height:auto !important}
-    [data-r="hero"] > div:first-child{height:52vw !important;min-height:280px !important}
-    [data-r="hero-logo"]{width:150px !important;margin-bottom:10px !important}
-    [data-r="hero-panel"]{padding:44px 8% 52px !important}
+    [data-r="hero"] > div:first-child{height:auto !important;min-height:0 !important}
+    [data-r="hero-photo"]{position:static !important;inset:auto !important;width:100% !important;height:auto !important;object-fit:initial !important;display:block !important}
+    [data-r="hero-logo"]{width:150px !important;margin-bottom:28px !important}
+    [data-r="hero-panel"]{padding:28px 8% 52px !important}
     [data-r="hero-tagline"]{margin-bottom:16px !important}
     [data-r="hero-title"]{margin-bottom:28px !important}
     [data-r="themen-row"]{grid-template-columns:1fr !important;gap:6px !important}
@@ -108,7 +109,7 @@
     <!-- HERO -->
     <section data-r="hero" style="display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 90px);">
       <div style="position:relative;overflow:hidden;background:#E7E1D7;">
-        <img src="assets/hero-portrait-final.jpg" alt="Silvia – Your Safe Space" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" />
+        <img data-r="hero-photo" src="assets/hero-portrait-final.jpg" alt="Silvia – Your Safe Space" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" />
         <div style="position:absolute;top:0;bottom:0;right:0;width:14%;background:linear-gradient(90deg, rgba(216,211,196,0) 0%, rgba(216,211,196,.35) 100%);pointer-events:none;"></div>
 
       </div>
