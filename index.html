@@ -51,8 +51,9 @@
     [data-r="format-split"] > div:last-child{order:1 !important}
     [data-r="kond-split"]{grid-template-columns:1fr !important;gap:32px !important}
     [data-r="kond-photo-wrap"]{position:static !important;top:auto !important}
-    [data-r="footer-logo-wrap"]{align-items:center !important}
+    [data-r="footer-logo-wrap"]{display:none !important}
     [data-r="footer-legal-row"]{flex-direction:column !important;align-items:flex-start !important}
+    [data-r="footer-links"]{flex-direction:column !important;align-items:flex-start !important;gap:12px !important}
   }
   @media (max-width:480px){
     [data-r="werdegang-row"]{grid-template-columns:1fr !important;gap:4px !important}
@@ -673,7 +674,7 @@
     <div style="border-top:1px solid rgba(63,72,57,.18);">
       <div data-r="footer-legal-row" style="max-width:1320px;margin:0 auto;padding:16px var(--pad-x);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:11px;color:#5c6553;">
         <div>© 2026 Your Safe Space · Zürich</div>
-        <div style="display:flex;gap:26px;flex-wrap:wrap;">
+        <div data-r="footer-links" style="display:flex;gap:26px;flex-wrap:wrap;">
           <a href="https://www.alinaeiberle.de/" target="_blank" rel="noopener" style="color:#5c6553;text-decoration:none;">{{ t.fotografie }}</a>
           <button onClick="{{ goDisclaimer }}" style="font-family:inherit;font-size:11px;color:#5c6553;background:none;border:none;padding:0;cursor:pointer;">Disclaimer</button>
           <button onClick="{{ goImpressum }}" style="font-family:inherit;font-size:11px;color:#5c6553;background:none;border:none;padding:0;cursor:pointer;">Impressum &amp; Datenschutz</button>
