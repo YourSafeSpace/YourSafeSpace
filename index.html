@@ -25,6 +25,9 @@
     [data-r="hero"]{grid-template-columns:1fr !important;min-height:auto !important}
     [data-r="hero"] > div:first-child{height:52vw !important;min-height:280px !important}
     [data-r="hero-logo"]{display:none !important}
+    [data-r="hero-panel"]{padding:44px 8% 52px !important}
+    [data-r="hero-tagline"]{margin-bottom:16px !important}
+    [data-r="hero-title"]{margin-bottom:28px !important}
     [data-r="themen-row"]{grid-template-columns:1fr !important;gap:6px !important}
     [data-r="split-sticky"]{grid-template-columns:1fr !important}
     [data-r="sticky-inner"]{position:static !important;top:auto !important}
@@ -109,10 +112,10 @@
         <div style="position:absolute;top:0;bottom:0;right:0;width:14%;background:linear-gradient(90deg, rgba(216,211,196,0) 0%, rgba(216,211,196,.35) 100%);pointer-events:none;"></div>
 
       </div>
-      <div style="background:#D5DCCF;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:90px 9%;">
+      <div data-r="hero-panel" style="background:#D5DCCF;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:90px 9%;">
         <img data-r="hero-logo" src="assets/logo-yss-eucalyptus.png" alt="Your Safe Space" style="width:380px;height:auto;margin-bottom:14px;" />
-        <div style="font-family:Manrope,sans-serif;font-weight:400;font-size:15px;letter-spacing:.04em;color:#647A6C;margin-bottom:34px;line-height:1.6;text-align:center;text-wrap:balance;">{{ t.tagline }}<br />{{ t.byLine }}</div>
-        <h1 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:var(--h-46);line-height:1.14;color:#4E6257;margin:0 0 40px;letter-spacing:-.01em;">{{ t.heroTitle }}</h1>
+        <div data-r="hero-tagline" style="font-family:Manrope,sans-serif;font-weight:400;font-size:15px;letter-spacing:.04em;color:#647A6C;margin-bottom:34px;line-height:1.6;text-align:center;text-wrap:balance;">{{ t.tagline }}<br />{{ t.byLine }}</div>
+        <h1 data-r="hero-title" style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:var(--h-46);line-height:1.14;color:#4E6257;margin:0 0 40px;letter-spacing:-.01em;">{{ t.heroTitle }}</h1>
         <button onClick="{{ goKontakt }}" style="background:#FBFAF6;border:none;border-radius:6px;padding:17px 34px;cursor:pointer;font-family:Manrope,sans-serif;font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#333a2d;">{{ t.ctaContact }}</button>
       </div>
     </section>
