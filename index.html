@@ -539,9 +539,9 @@
               <textarea rows="3" name="nachricht" placeholder="{{ t.fNachrichtPh }}" style="width:100%;padding:8px 0;border:none;border-bottom:1px solid #D8D2C6;background:none;font-family:Manrope,sans-serif;font-size:16px;color:#43483f;resize:vertical;transition:border-color .2s;"></textarea>
             </div>
             <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
-              <button type="submit" style="background:#DED3C6;border:none;border-radius:6px;padding:17px 30px;cursor:pointer;font-family:Manrope,sans-serif;font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#333a2d;">{{ t.btnMail }}</button>
               <button type="button" onClick="{{ sendWhatsApp }}" style="display:inline-flex;align-items:center;gap:10px;background:#4E6257;border:none;border-radius:6px;padding:17px 30px;cursor:pointer;font-family:Manrope,sans-serif;font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#FBFAF6;"><svg viewBox="0 0 24 24" width="16" height="16" fill="#FBFAF6" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.25-8.23 2.2 0 4.27.86 5.83 2.41a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.4-.12-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.06-.39-2.02-1.25-.75-.67-1.25-1.49-1.4-1.74-.14-.25-.01-.39.11-.51.11-.11.25-.29.37-.44.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.73 2.78 4.2 3.79.59.25 1.04.4 1.4.51.59.19 1.12.16 1.55.1.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.23-.17-.48-.29z"/></svg>{{ t.btnWa }}</button>
             </div>
+            <p style="margin:16px 0 0;font-size:13px;line-height:1.6;color:#6a6f63;text-align:center;">{{ t.mailNote }} <a href="mailto:silvia@yoursafespace.ch" style="color:#4E6257;text-decoration:underline;">silvia@yoursafespace.ch</a></p>
             <p style="margin:10px 0 0;font-size:12.5px;color:#9a9689;text-align:center;">{{ t.required }}</p>
             <div data-portrait-wrap="1" style="margin-top:130px;text-align:center;">
               <p style="margin:0 0 12px;font-family:'Cormorant Garamond',serif;font-weight:400;font-size:26px;line-height:1.32;letter-spacing:-.005em;color:#333a2d;">{{ t.freueMich }}</p>
@@ -875,6 +875,7 @@ class Component extends DCLogic {
       fTag:"Bevorzugter Tag", fTagPh:"z. B. Mittwochnachmittag",
       fNachricht:"Deine Nachricht", fNachrichtPh:"Was bewegt dich? Was wünschst du dir?",
       btnMail:"Per E-Mail senden", btnWa:"Per WhatsApp", required:"* Pflichtfelder",
+      mailNote:"Lieber per E-Mail? Schreib mir direkt an",
       freueMich:"Ich freue mich auf dich, Silvia",
       thanks:"Danke.", sentTitle:"Deine Nachricht ist angekommen.",
       sentText:"Ich melde mich so bald wie möglich bei dir – meist innerhalb von zwei Werktagen. Bis dahin: Sei gut zu dir.",
@@ -1000,6 +1001,7 @@ class Component extends DCLogic {
       fTag:"Jour préféré", fTagPh:"p. ex. mercredi après-midi",
       fNachricht:"Votre message", fNachrichtPh:"Qu'est-ce qui vous préoccupe ? Que souhaitez-vous ?",
       btnMail:"Envoyer par e-mail", btnWa:"Par WhatsApp", required:"* Champs obligatoires",
+      mailNote:"Vous préférez l'e-mail ? Écrivez-moi directement à",
       freueMich:"Au plaisir de vous rencontrer, Silvia",
       thanks:"Merci.", sentTitle:"Votre message est bien arrivé.",
       sentText:"Je vous réponds dès que possible – en général dans les deux jours ouvrables. D'ici là : prenez soin de vous.",
@@ -1125,6 +1127,7 @@ class Component extends DCLogic {
       fTag:"Preferred day", fTagPh:"e.g. Wednesday afternoon",
       fNachricht:"Your message", fNachrichtPh:"What is on your mind? What do you wish for?",
       btnMail:"Send by e-mail", btnWa:"Via WhatsApp", required:"* Required fields",
+      mailNote:"Prefer e-mail? Write to me directly at",
       freueMich:"I look forward to meeting you, Silvia",
       thanks:"Thank you.", sentTitle:"Your message has arrived.",
       sentText:"I will get back to you as soon as possible – usually within two working days. Until then: be kind to yourself.",
@@ -1299,15 +1302,9 @@ class Component extends DCLogic {
       goAngebote: () => this.go('angebote'),
       sent: this.state.sent,
       notSent: !this.state.sent,
-      onSubmit: (e) => {
-        e.preventDefault();
-        const text = this.buildEnquiry();
-        if (text === null) return;
-        window.location.href = 'mailto:silvia@yoursafespace.ch'
-          + '?subject=' + encodeURIComponent('Terminanfrage über yoursafespace.ch')
-          + '&body=' + encodeURIComponent(text);
-        this.setState({ sent: true });
-      },
+      // No submit button: WhatsApp is the only send path. This only catches
+      // implicit submission (Enter in a text field), which must not navigate.
+      onSubmit: (e) => { e.preventDefault(); },
       langs: ['DE','FR','EN'].map(code => ({
         label: code,
         onClick: () => this.setLang(code),
