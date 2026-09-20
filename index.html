@@ -54,6 +54,7 @@
     [data-r="footer-logo-wrap"]{display:none !important}
     [data-r="footer-legal-row"]{flex-direction:column !important;align-items:flex-start !important}
     [data-r="footer-links"]{flex-direction:column !important;align-items:flex-start !important;gap:12px !important}
+    [data-portrait-wrap]{margin-top:56px !important}
   }
   @media (max-width:480px){
     [data-r="werdegang-row"]{grid-template-columns:1fr !important;gap:4px !important}
@@ -721,6 +722,9 @@ class Component extends DCLogic {
     const g = root.querySelector('[data-greige]');
     const p = root.querySelector('[data-portrait-wrap]');
     if(!g || !p) return;
+    // Below 900px the two columns stack, so there is no side-by-side
+    // bottom edge to align to; the CSS margin applies instead.
+    if(window.innerWidth <= 900){ p.style.marginTop = ''; return; }
     p.style.marginTop = '0px';
     const gb = g.getBoundingClientRect().bottom;
     const pb = p.getBoundingClientRect().bottom;
