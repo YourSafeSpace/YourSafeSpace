@@ -732,6 +732,23 @@ class Component extends DCLogic {
     p.style.marginTop = Math.max(0, delta) + 'px';
   }
 
+  buildEnquiry(){
+    const f = this.form;
+    if (!f) return null;
+    if (typeof f.reportValidity === 'function' && !f.reportValidity()) return null;
+    const v = (n) => { const el = f.elements[n]; return el ? (el.type === 'checkbox' ? (el.checked ? 'Ja' : 'Nein') : (el.value || '').trim()) : ''; };
+    const rows = [
+      ['Name', [v('vorname'), v('nachname')].filter(Boolean).join(' ')],
+      ['E-Mail', v('email')],
+      ['Telefon', v('telefon')],
+      ['Sprache', v('sprache')],
+      ['Format', v('format')],
+      ['Bevorzugter Tag', v('tag')],
+      ['Nachricht', v('nachricht')],
+    ].filter(([, val]) => val);
+    return 'Terminanfrage über yoursafespace.ch\n\n' + rows.map(([k, val]) => k + ': ' + val).join('\n');
+  }
+
   applyVars(){
     if(this.rootEl){
       this.rootEl.style.setProperty('--primary', this.props.primary ?? '#7B867A');
@@ -1282,7 +1299,15 @@ class Component extends DCLogic {
       goAngebote: () => this.go('angebote'),
       sent: this.state.sent,
       notSent: !this.state.sent,
-      onSubmit: (e) => { e.preventDefault(); this.setState({ sent:true }); },
+      onSubmit: (e) => {
+        e.preventDefault();
+        const text = this.buildEnquiry();
+        if (text === null) return;
+        window.location.href = 'mailto:silvia@yoursafespace.ch'
+          + '?subject=' + encodeURIComponent('Terminanfrage über yoursafespace.ch')
+          + '&body=' + encodeURIComponent(text);
+        this.setState({ sent: true });
+      },
       langs: ['DE','FR','EN'].map(code => ({
         label: code,
         onClick: () => this.setLang(code),
@@ -1301,20 +1326,8 @@ class Component extends DCLogic {
       })),
       setForm: (el) => { this.form = el; },
       sendWhatsApp: () => {
-        const f = this.form;
-        if (!f) return;
-        if (typeof f.reportValidity === 'function' && !f.reportValidity()) return;
-        const v = (n) => { const el = f.elements[n]; return el ? (el.type === 'checkbox' ? (el.checked ? 'Ja' : 'Nein') : (el.value || '').trim()) : ''; };
-        const rows = [
-          ['Name', [v('vorname'), v('nachname')].filter(Boolean).join(' ')],
-          ['E-Mail', v('email')],
-          ['Telefon', v('telefon')],
-          ['Sprache', v('sprache')],
-          ['Format', v('format')],
-          ['Bevorzugter Tag', v('tag')],
-          ['Nachricht', v('nachricht')],
-        ].filter(([, val]) => val);
-        const text = 'Terminanfrage über yoursafespace.ch\n\n' + rows.map(([k, val]) => k + ': ' + val).join('\n');
+        const text = this.buildEnquiry();
+        if (text === null) return;
         window.open('https://wa.me/41783216104?text=' + encodeURIComponent(text), '_blank', 'noopener');
         this.setState({ sent: true });
       },
