@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://yoursafespace.ch/sitemap.xml
+Sitemap: https://www.yoursafespace.ch/sitemap.xml
