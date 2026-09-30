@@ -1,4 +1,8 @@
 {
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/support.js", "/robots.txt", "/sitemap.xml"]
+  },
   "globalHeaders": {
     "X-Frame-Options": "DENY",
     "Content-Security-Policy": "frame-ancestors 'none'",
