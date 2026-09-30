@@ -3,7 +3,48 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="./support.js"></script>
+<!-- Pages live at /de/angebote etc. and are all served by this one file, so
+     relative asset paths must resolve from the site root. -->
+<base href="/">
+<title>Psychologische Beratung Zürich – Your Safe Space | Silvia Soret</title>
+<meta name="description" content="Psychologische Beratung in Zürich für Erwachsene & Paare: Einzelberatung, Paar- und Beziehungsberatung mit Silvia Soret – in der Zürcher Altstadt oder online. Auf Deutsch, Englisch und Französisch.">
+<link rel="canonical" href="https://yoursafespace.ch/de/">
+<link rel="alternate" hreflang="de" href="https://yoursafespace.ch/de/">
+<link rel="alternate" hreflang="en" href="https://yoursafespace.ch/en/">
+<link rel="alternate" hreflang="fr" href="https://yoursafespace.ch/fr/">
+<link rel="alternate" hreflang="x-default" href="https://yoursafespace.ch/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Your Safe Space">
+<meta property="og:title" content="Psychologische Beratung Zürich – Your Safe Space">
+<meta property="og:description" content="Einzelberatung, Paar- und Beziehungsberatung mit Silvia Soret in der Zürcher Altstadt oder online.">
+<meta property="og:url" content="https://yoursafespace.ch/de/">
+<meta property="og:image" content="https://yoursafespace.ch/assets/hero-portrait-final.jpg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": "https://yoursafespace.ch/#practice",
+  "name": "Your Safe Space – Psychologische Beratung",
+  "description": "Psychologische Beratung für Erwachsene und Paare in Zürich: Einzelberatung, Paar- und Beziehungsberatung, vor Ort oder online.",
+  "url": "https://yoursafespace.ch/",
+  "logo": "https://yoursafespace.ch/assets/logo-yss-eucalyptus.png",
+  "image": "https://yoursafespace.ch/assets/hero-portrait-final.jpg",
+  "email": "silvia@yoursafespace.ch",
+  "telephone": "+41783216104",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Stüssihofstatt 7",
+    "postalCode": "8001",
+    "addressLocality": "Zürich",
+    "addressRegion": "ZH",
+    "addressCountry": "CH"
+  },
+  "areaServed": "Zürich",
+  "availableLanguage": ["de", "en", "fr"],
+  "founder": { "@type": "Person", "name": "Silvia Soret" }
+}
+</script>
+<script src="/support.js"></script>
 </head>
 <body>
 <x-dc>
@@ -18,10 +59,12 @@
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   [data-r="navburger"]{display:none}
+  [data-r="mobilemenu"]{display:none}
   [data-r="collage-mobile"]{display:none}
   @media (max-width:900px){
     [data-r="navlinks"]{display:none !important}
     [data-r="navburger"]{display:flex !important}
+    [data-r="mobilemenu"]{display:flex !important;flex-direction:column}
     header img{height:56px !important}
     [data-r="header-row"]{padding:6px var(--pad-x) !important;gap:16px !important}
     [data-r="hero"]{grid-template-columns:1fr !important;min-height:auto !important}
@@ -79,17 +122,17 @@
   <!-- ============ NAV ============ -->
   <header style="position:sticky;top:0;z-index:50;background:rgba(251,250,246,.85);backdrop-filter:blur(14px);">
     <div data-r="header-row" style="width:100%;margin:0;padding:6px 40px;display:flex;align-items:center;justify-content:flex-start;gap:36px;flex-wrap:nowrap;box-sizing:border-box;">
-      <button onClick="{{ goHome }}" style="background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;flex-shrink:0;">
+      <a href="{{ goHomeHref }}" onClick="{{ goHome }}" style="background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;flex-shrink:0;">
         <img src="assets/logo-yss-eucalyptus.png" alt="Your Safe Space" style="height:82px;width:auto;display:block;" />
-      </button>
+      </a>
       <nav data-r="navlinks" style="display:flex;align-items:center;gap:32px;flex-wrap:nowrap;">
         <sc-for list="{{ links }}" as="link" hint-placeholder-count="5">
-          <button onClick="{{ link.onClick }}" style="{{ link.style }}">{{ link.label }}</button>
+          <a href="{{ link.href }}" onClick="{{ link.onClick }}" style="{{ link.style }}">{{ link.label }}</a>
         </sc-for>
       </nav>
       <div style="margin-left:auto;display:flex;align-items:center;gap:10px;flex-shrink:0;">
         <sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
-          <button onClick="{{ l.onClick }}" style="{{ l.style }}">{{ l.label }}</button>
+          <a href="{{ l.href }}" hreflang="{{ l.hreflang }}" onClick="{{ l.onClick }}" style="{{ l.style }}">{{ l.label }}</a>
         </sc-for>
         <button data-r="navburger" onClick="{{ toggleMenu }}" aria-label="Menü" style="align-items:center;justify-content:center;width:44px;height:44px;background:none;border:none;cursor:pointer;flex-direction:column;gap:4px;">
           <span style="display:block;width:20px;height:1.5px;background:#43483f;"></span>
@@ -98,9 +141,9 @@
       </div>
     </div>
     <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
-      <div style="background:rgba(251,250,246,.97);border-top:1px solid rgba(63,72,57,.12);display:flex;flex-direction:column;">
+      <div data-r="mobilemenu" style="background:rgba(251,250,246,.97);border-top:1px solid rgba(63,72,57,.12);flex-direction:column;">
         <sc-for list="{{ links }}" as="link" hint-placeholder-count="5">
-          <button onClick="{{ link.onClick }}" style="{{ link.mobileStyle }}">{{ link.label }}</button>
+          <a href="{{ link.href }}" onClick="{{ link.onClick }}" style="{{ link.mobileStyle }}">{{ link.label }}</a>
         </sc-for>
       </div>
     </sc-if>
@@ -680,9 +723,9 @@
         <div>© 2026 Your Safe Space · Zürich</div>
         <div data-r="footer-links" style="display:flex;gap:26px;flex-wrap:wrap;">
           <a href="https://www.alinaeiberle.de/" target="_blank" rel="noopener" style="color:#5c6553;text-decoration:none;">{{ t.fotografie }}</a>
-          <button onClick="{{ goDisclaimer }}" style="font-family:inherit;font-size:11px;color:#5c6553;background:none;border:none;padding:0;cursor:pointer;">Disclaimer</button>
-          <button onClick="{{ goImpressum }}" style="font-family:inherit;font-size:11px;color:#5c6553;background:none;border:none;padding:0;cursor:pointer;">Impressum &amp; Datenschutz</button>
-          <a href="#" style="color:#5c6553;text-decoration:none;">{{ t.agb }}</a>
+          <a href="{{ goDisclaimerHref }}" onClick="{{ goDisclaimer }}" style="font-family:inherit;font-size:11px;color:#5c6553;text-decoration:none;cursor:pointer;">Disclaimer</a>
+          <a href="{{ goImpressumHref }}" onClick="{{ goImpressum }}" style="font-family:inherit;font-size:11px;color:#5c6553;text-decoration:none;cursor:pointer;">Impressum &amp; Datenschutz</a>
+          <a style="color:#5c6553;text-decoration:none;">{{ t.agb }}</a>
         </div>
       </div>
     </div>
@@ -695,15 +738,50 @@
   &quot;primary&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#7B867A&quot;, &quot;options&quot;: [&quot;#7B867A&quot;, &quot;#C7D0C4&quot;, &quot;#A59C90&quot;, &quot;#8A9285&quot;], &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Theme&quot; },
   &quot;radius&quot;: { &quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 0, &quot;min&quot;: 0, &quot;max&quot;: 16, &quot;step&quot;: 1, &quot;unit&quot;: &quot;px&quot;, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Theme&quot; }
 }">
+const SITE = 'https://yoursafespace.ch';
+const PAGES = ['home', 'angebote', 'ueber', 'konditionen', 'kontakt', 'impressum', 'disclaimer'];
+const pagePath = (lang, page) => '/' + lang + '/' + (page === 'home' ? '' : page);
+const SEO = {
+  de: {
+    home:        ['Psychologische Beratung Zürich – Your Safe Space | Silvia Soret', 'Psychologische Beratung in Zürich für Erwachsene & Paare: Einzelberatung, Paar- und Beziehungsberatung mit Silvia Soret – in der Zürcher Altstadt oder online. Auf Deutsch, Englisch und Französisch.'],
+    angebote:    ['Angebot: Einzel-, Paar- & Beziehungsberatung Zürich | Your Safe Space', 'Einzelberatung für Erwachsene, Paar- und Beziehungsberatung sowie Begleitung, wenn ein Kind alles verändert – vor Ort in Zürich oder online.'],
+    ueber:       ['Über mich – Silvia Soret | Your Safe Space Zürich', 'Silvia Soret: Werdegang, Ausbildung und Haltung hinter Your Safe Space, der psychologischen Beratung in der Zürcher Altstadt.'],
+    konditionen: ['Konditionen & Preise – Psychologische Beratung Zürich | Your Safe Space', 'Preise, Sitzungsdauer, Absage- und Zahlungsbedingungen für Einzel- und Paarberatung bei Your Safe Space in Zürich.'],
+    kontakt:     ['Kontakt & Termin anfragen | Your Safe Space Zürich', 'Termin für psychologische Beratung anfragen: Stüssihofstatt 7, 8001 Zürich – per WhatsApp oder E-Mail an Silvia Soret.'],
+    impressum:   ['Impressum & Datenschutz | Your Safe Space', 'Impressum und Datenschutzerklärung von Your Safe Space – Silvia Soret, Zürich.'],
+    disclaimer:  ['Disclaimer | Your Safe Space', 'Rechtliche Hinweise und Haftungsausschluss von Your Safe Space – Silvia Soret, Zürich.'],
+  },
+  en: {
+    home:        ['Psychological Counselling in Zurich – Your Safe Space | Silvia Soret', 'Psychological counselling in Zurich for adults & couples: individual, couples and relationship counselling with Silvia Soret – in Zurich\'s old town or online. In English, German and French.'],
+    angebote:    ['Services: Individual, Couples & Relationship Counselling Zurich | Your Safe Space', 'Individual counselling for adults, couples and relationship counselling, and support when a baby changes everything – in Zurich or online.'],
+    ueber:       ['About me – Silvia Soret | Your Safe Space Zurich', 'Silvia Soret: background, training and approach behind Your Safe Space, psychological counselling in Zurich\'s old town.'],
+    konditionen: ['Fees & Terms – Counselling in Zurich | Your Safe Space', 'Fees, session length, cancellation and payment terms for individual and couples counselling at Your Safe Space in Zurich.'],
+    kontakt:     ['Contact & Book a Session | Your Safe Space Zurich', 'Request a counselling session: Stüssihofstatt 7, 8001 Zurich – via WhatsApp or e-mail to Silvia Soret.'],
+    impressum:   ['Legal Notice & Privacy | Your Safe Space', 'Legal notice and privacy policy of Your Safe Space – Silvia Soret, Zurich.'],
+    disclaimer:  ['Disclaimer | Your Safe Space', 'Legal disclaimer of Your Safe Space – Silvia Soret, Zurich.'],
+  },
+  fr: {
+    home:        ['Conseil psychologique à Zurich – Your Safe Space | Silvia Soret', 'Conseil psychologique à Zurich pour adultes et couples : accompagnement individuel, de couple et relationnel avec Silvia Soret – dans la vieille ville de Zurich ou en ligne. En français, allemand et anglais.'],
+    angebote:    ['Offre : conseil individuel, de couple et relationnel à Zurich | Your Safe Space', 'Conseil individuel pour adultes, conseil de couple et relationnel, accompagnement quand un enfant change tout – à Zurich ou en ligne.'],
+    ueber:       ['À propos – Silvia Soret | Your Safe Space Zurich', 'Silvia Soret : parcours, formation et approche derrière Your Safe Space, conseil psychologique dans la vieille ville de Zurich.'],
+    konditionen: ['Tarifs & conditions – Conseil psychologique Zurich | Your Safe Space', 'Tarifs, durée des séances, conditions d\'annulation et de paiement pour le conseil individuel et de couple à Zurich.'],
+    kontakt:     ['Contact & prise de rendez-vous | Your Safe Space Zurich', 'Demander un rendez-vous : Stüssihofstatt 7, 8001 Zurich – par WhatsApp ou e-mail à Silvia Soret.'],
+    impressum:   ['Mentions légales & confidentialité | Your Safe Space', 'Mentions légales et politique de confidentialité de Your Safe Space – Silvia Soret, Zurich.'],
+    disclaimer:  ['Avertissement juridique | Your Safe Space', 'Avertissement juridique de Your Safe Space – Silvia Soret, Zurich.'],
+  },
+};
+
 class Component extends DCLogic {
   state = { page: 'home', sent: false, menuOpen: false };
 
   componentDidMount(){
     this.applyVars();
     try{
-      const hp = ((window.location.hash || '').match(/^#\/(?:de|fr|en)\/([a-z]+)/i) || [])[1];
-      this.setState({ lang: this.initLang(), page: hp || this.state.page }, () => this.syncUrl());
+      const r = this.readRoute();
+      this.setState({ lang: r.lang || this.initLang(), page: r.page }, () => this.syncUrl(true));
     }catch(e){}
+    this._pop = () => { const r = this.readRoute(); this.setState({ lang: r.lang || this.state.lang, page: r.page, menuOpen: false }, () => this.syncUrl(true)); };
+    window.addEventListener('popstate', this._pop);
     this._align = () => this.alignPortrait();
     window.addEventListener('resize', this._align);
     if(typeof document !== 'undefined'){
@@ -712,7 +790,7 @@ class Component extends DCLogic {
     this.scheduleAlign();
   }
   componentDidUpdate(){ this.applyVars(); this.scheduleAlign(); }
-  componentWillUnmount(){ if(this._align) window.removeEventListener('resize', this._align); }
+  componentWillUnmount(){ if(this._align) window.removeEventListener('resize', this._align); if(this._pop) window.removeEventListener('popstate', this._pop); }
 
   scheduleAlign(){
     if(typeof requestAnimationFrame === 'undefined') return;
@@ -759,10 +837,17 @@ class Component extends DCLogic {
     }
   }
 
+  // URLs are /<lang>/<page> (home is /<lang>/). Old #/<lang>/<page> links
+  // are still understood and get rewritten to the path form by syncUrl.
+  readRoute(){
+    const src = /^#\//.test(window.location.hash || '') ? window.location.hash.slice(1) : window.location.pathname;
+    const m = src.match(/^\/(de|fr|en)(?:\/([a-z]+))?\/?$/i);
+    const page = m && m[2] && PAGES.indexOf(m[2].toLowerCase()) >= 0 ? m[2].toLowerCase() : 'home';
+    return { lang: m ? m[1].toUpperCase() : null, page };
+  }
+
   initLang(){
     try{
-      const m = (window.location.hash || '').match(/^#\/(de|fr|en)(?:\/|$)/i);
-      if(m) return m[1].toUpperCase();
       const s = window.localStorage.getItem('yss_lang');
       if(s && ['DE','FR','EN'].indexOf(s) >= 0) return s;
       const n = ((navigator.language || 'de').slice(0,2)).toLowerCase();
@@ -774,17 +859,46 @@ class Component extends DCLogic {
 
   setLang(code){
     try{ window.localStorage.setItem('yss_lang', code); }catch(e){}
-    this.setState({ lang: code }, () => this.syncUrl());
+    this.setState({ lang: code, menuOpen: false }, () => this.syncUrl());
   }
 
-  syncUrl(){
+  syncUrl(replace){
     try{
       const lang = (this.state.lang || 'DE').toLowerCase();
       const page = this.state.page || 'home';
-      document.documentElement.lang = lang;
-      const h = '#/' + lang + '/' + page;
-      if(window.location.hash !== h) window.history.replaceState(null, '', h);
+      const path = pagePath(lang, page);
+      if(window.location.pathname !== path || window.location.hash){
+        window.history[replace ? 'replaceState' : 'pushState'](null, '', path);
+      }
+      this.applySeo(lang, page);
     }catch(e){}
+  }
+
+  // Per-page <title>, description, canonical and hreflang, so each language
+  // and page is indexed as its own search result.
+  applySeo(lang, page){
+    const d = document, head = d.head;
+    const meta = (SEO[lang] || SEO.de)[page] || (SEO[lang] || SEO.de).home;
+    d.documentElement.lang = lang;
+    d.title = meta[0];
+    const tag = (sel, make) => head.querySelector(sel) || head.appendChild(make());
+    tag('meta[name="description"]', () => Object.assign(d.createElement('meta'), { name: 'description' })).content = meta[1];
+    tag('link[rel="canonical"]', () => Object.assign(d.createElement('link'), { rel: 'canonical' })).href = SITE + pagePath(lang, page);
+    ['de', 'en', 'fr'].forEach(l => {
+      tag('link[rel="alternate"][hreflang="' + l + '"]', () => { const e = d.createElement('link'); e.rel = 'alternate'; e.hreflang = l; return e; }).href = SITE + pagePath(l, page);
+    });
+    const xd = head.querySelector('link[hreflang="x-default"]');
+    if(xd) xd.href = SITE + (page === 'home' ? '/' : pagePath('de', page));
+    const og = (p, v) => { const e = head.querySelector('meta[property="' + p + '"]'); if(e) e.content = v; };
+    og('og:title', meta[0]); og('og:description', meta[1]); og('og:url', SITE + pagePath(lang, page));
+  }
+
+  // Links are real <a href> so search engines can follow them; plain clicks
+  // are handled in-page, modified clicks (new tab etc.) fall through.
+  linkClick(e, fn){
+    if(e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button > 0)) return;
+    if(e) e.preventDefault();
+    fn();
   }
 
   go(p){
@@ -1190,7 +1304,8 @@ class Component extends DCLogic {
     ];
     const links = nav.map(l => ({
       label: l.label,
-      onClick: () => this.go(l.key),
+      href: pagePath(lang.toLowerCase(), l.key),
+      onClick: (e) => this.linkClick(e, () => this.go(l.key)),
       style: {
         fontFamily:'Manrope, sans-serif',
         fontSize:'13.5px',
@@ -1203,6 +1318,7 @@ class Component extends DCLogic {
         whiteSpace:'nowrap',
         background:'none',
         border:'none',
+        textDecoration:'none',
       },
       mobileStyle: {
         fontFamily:'Manrope, sans-serif',
@@ -1217,6 +1333,9 @@ class Component extends DCLogic {
         background:'none',
         border:'none',
         borderTop:'1px solid rgba(63,72,57,.08)',
+        display:'block',
+        boxSizing:'border-box',
+        textDecoration:'none',
       }
     }));
 
@@ -1288,17 +1407,20 @@ class Component extends DCLogic {
       themen: t.themen, einzel: t.einzel, konditionen: t.konditionen,
       kontaktInfo: t.kontaktInfo, ausbildungen: t.ausbildungen,
       isDisclaimer: page==='disclaimer',
-      goDisclaimer: () => this.go('disclaimer'),
+      goDisclaimer: (e) => this.linkClick(e, () => this.go('disclaimer')),
+      goDisclaimerHref: pagePath(lang.toLowerCase(), 'disclaimer'),
       dsg,
       isImpressum: page==='impressum',
-      goImpressum: () => this.go('impressum'),
+      goImpressum: (e) => this.linkClick(e, () => this.go('impressum')),
+      goImpressumHref: pagePath(lang.toLowerCase(), 'impressum'),
       seminare: seminare.map(s => ({ ...s, highlightBg: 'transparent' })),
       isHome: page==='home',
       isAngebote: page==='angebote',
       isUeber: page==='ueber',
       isKond: page==='konditionen',
       isKontakt: page==='kontakt',
-      goHome: () => this.go('home'),
+      goHome: (e) => this.linkClick(e, () => this.go('home')),
+      goHomeHref: pagePath(lang.toLowerCase(), 'home'),
       goKontakt: () => this.go('kontakt'),
       monthLabel: (() => { const m=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']; return m[new Date().getMonth()]; })(),
       nextMonthLabel: (() => { const m=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']; return m[(new Date().getMonth()+1)%12]; })(),
@@ -1310,7 +1432,9 @@ class Component extends DCLogic {
       onSubmit: (e) => { e.preventDefault(); },
       langs: ['DE','FR','EN'].map(code => ({
         label: code,
-        onClick: () => this.setLang(code),
+        href: pagePath(code.toLowerCase(), page),
+        hreflang: code.toLowerCase(),
+        onClick: (e) => this.linkClick(e, () => this.setLang(code)),
         style: {
           fontFamily:'Manrope, sans-serif',
           fontSize:'13.5px',
@@ -1322,6 +1446,7 @@ class Component extends DCLogic {
           borderRadius:'4px',
           padding:'6px 10px',
           cursor:'pointer',
+          textDecoration:'none',
         },
       })),
       setForm: (el) => { this.form = el; },

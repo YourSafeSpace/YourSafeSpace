@@ -4,7 +4,7 @@ Website for Your Safe Space — psychological counselling practice (Silvia).
 
 A single self-contained page (`index.html`) built with a small React-based template runtime (`support.js`). No build step: everything renders client-side, with fonts and React/ReactDOM loaded from CDN.
 
-- Trilingual: German / English / French, switchable in the nav (persisted via URL hash + localStorage, auto-detected from the browser on first visit).
+- Trilingual: German / English / French, switchable in the nav (each page has its own URL, e.g. `/de/angebote`, `/fr/kontakt`; old `#/de/...` links are redirected. Language is auto-detected from the browser when visiting `/`).
 - Responsive: one file, breakpoints at 900px and 480px.
 
 ## Preview locally
