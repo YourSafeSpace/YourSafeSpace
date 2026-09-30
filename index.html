@@ -584,10 +584,20 @@
               <label style="display:block;font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#AD8A4E;margin-bottom:10px;">{{ t.fNachricht }}</label>
               <textarea rows="3" name="nachricht" placeholder="{{ t.fNachrichtPh }}" style="width:100%;padding:8px 0;border:none;border-bottom:1px solid #D8D2C6;background:none;font-family:Manrope,sans-serif;font-size:16px;color:#43483f;resize:vertical;transition:border-color .2s;"></textarea>
             </div>
+            <div aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;">
+              <label>Website <input type="text" name="website" tabIndex="-1" autoComplete="off" /></label>
+            </div>
+            <div ref="{{ setTurnstile }}" style="display:flex;justify-content:center;margin-bottom:16px;"></div>
             <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
+              <button type="submit" disabled="{{ sending }}" style="background:#DED3C6;border:none;border-radius:6px;padding:17px 30px;cursor:pointer;font-family:Manrope,sans-serif;font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#333a2d;">{{ mailButtonLabel }}</button>
               <button type="button" onClick="{{ sendWhatsApp }}" style="display:inline-flex;align-items:center;gap:10px;background:#4E6257;border:none;border-radius:6px;padding:17px 30px;cursor:pointer;font-family:Manrope,sans-serif;font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#FBFAF6;"><svg viewBox="0 0 24 24" width="16" height="16" fill="#FBFAF6" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.25-8.23 2.2 0 4.27.86 5.83 2.41a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.4-.12-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.06-.39-2.02-1.25-.75-.67-1.25-1.49-1.4-1.74-.14-.25-.01-.39.11-.51.11-.11.25-.29.37-.44.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.73 2.78 4.2 3.79.59.25 1.04.4 1.4.51.59.19 1.12.16 1.55.1.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.23-.17-.48-.29z"/></svg>{{ t.btnWa }}</button>
             </div>
+            <sc-if value="{{ sendError }}" hint-placeholder-val="{{ false }}">
+            <p role="alert" style="margin:16px 0 0;font-size:14px;line-height:1.6;color:#9a4a3c;text-align:center;">{{ t.sendError }} <a href="mailto:silvia@yoursafespace.ch" style="color:inherit;text-decoration:underline;">silvia@yoursafespace.ch</a></p>
+            </sc-if>
+            <sc-if value="{{ noSendError }}" hint-placeholder-val="{{ true }}">
             <p style="margin:16px 0 0;font-size:13px;line-height:1.6;color:#6a6f63;text-align:center;">{{ t.mailNote }} <a href="mailto:silvia@yoursafespace.ch" style="color:#4E6257;text-decoration:underline;">silvia@yoursafespace.ch</a></p>
+            </sc-if>
             <p style="margin:10px 0 0;font-size:12.5px;color:#9a9689;text-align:center;">{{ t.required }}</p>
             <div data-portrait-wrap="1" style="margin-top:130px;text-align:center;">
               <p style="margin:0 0 12px;font-family:'Cormorant Garamond',serif;font-weight:400;font-size:26px;line-height:1.32;letter-spacing:-.005em;color:#333a2d;">{{ t.freueMich }}</p>
@@ -739,6 +749,10 @@
   &quot;radius&quot;: { &quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 0, &quot;min&quot;: 0, &quot;max&quot;: 16, &quot;step&quot;: 1, &quot;unit&quot;: &quot;px&quot;, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Theme&quot; }
 }">
 const SITE = 'https://yoursafespace.ch';
+// Cloudflare Turnstile site key (public; the secret lives in the Azure app
+// settings). This is Cloudflare's always-pass test key: swap in the real one.
+const TURNSTILE_SITE_KEY = '1x00000000000000000000AA';
+
 const PAGES = ['home', 'angebote', 'ueber', 'konditionen', 'kontakt', 'impressum', 'disclaimer'];
 const pagePath = (lang, page) => '/' + lang + '/' + (page === 'home' ? '' : page);
 const SEO = {
@@ -772,7 +786,7 @@ const SEO = {
 };
 
 class Component extends DCLogic {
-  state = { page: 'home', sent: false, menuOpen: false };
+  state = { page: 'home', sent: false, sending: false, sendError: false, menuOpen: false };
 
   componentDidMount(){
     this.applyVars();
@@ -828,6 +842,69 @@ class Component extends DCLogic {
       ['Nachricht', v('nachricht')],
     ].filter(([, val]) => val);
     return 'Terminanfrage über yoursafespace.ch\n\n' + rows.map(([k, val]) => k + ': ' + val).join('\n');
+  }
+
+  enquiryFields(){
+    const f = this.form.elements;
+    const v = (n) => (f[n] ? f[n].value : '');
+    return {
+      vorname: v('vorname'), nachname: v('nachname'), email: v('email'), telefon: v('telefon'),
+      waOk: !!(f.wa_ok && f.wa_ok.checked), sprache: v('sprache'), format: v('format'),
+      tag: v('tag'), nachricht: v('nachricht'), website: v('website'),
+      elapsedMs: Date.now() - (this.formStart || Date.now()),
+    };
+  }
+
+  // Turnstile is only loaded once the contact form is on screen, so other
+  // pages never contact Cloudflare.
+  renderTurnstile(el){
+    const render = () => {
+      if (this.tsEl !== el) return;
+      this.tsWidget = window.turnstile.render(el, {
+        sitekey: TURNSTILE_SITE_KEY,
+        appearance: 'interaction-only',
+        language: (this.state.lang || 'DE').toLowerCase(),
+      });
+    };
+    if (window.turnstile) return render();
+    let s = document.getElementById('cf-turnstile-js');
+    if (!s) {
+      s = document.createElement('script');
+      s.id = 'cf-turnstile-js';
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      s.async = true;
+      document.head.appendChild(s);
+    }
+    s.addEventListener('load', render);
+  }
+
+  // The invisible check usually finishes within a second of the form
+  // appearing; wait briefly for it rather than failing a quick submit.
+  async turnstileToken(){
+    for (let i = 0; i < 20; i++) {
+      const token = window.turnstile && this.tsWidget !== undefined ? window.turnstile.getResponse(this.tsWidget) : '';
+      if (token) return token;
+      await new Promise(r => setTimeout(r, 250));
+    }
+    return '';
+  }
+
+  async sendEmail(){
+    if (this.state.sending || this.buildEnquiry() === null) return;
+    this.setState({ sending: true, sendError: false });
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...this.enquiryFields(), turnstileToken: await this.turnstileToken() }),
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      this.setState({ sending: false, sent: true });
+    } catch (e) {
+      // Tokens are single-use: get a fresh one for the next attempt.
+      if (window.turnstile && this.tsWidget !== undefined) window.turnstile.reset(this.tsWidget);
+      this.setState({ sending: false, sendError: true });
+    }
   }
 
   applyVars(){
@@ -992,6 +1069,7 @@ class Component extends DCLogic {
       fTag:"Bevorzugter Tag", fTagPh:"z. B. Mittwochnachmittag",
       fNachricht:"Deine Nachricht", fNachrichtPh:"Was bewegt dich? Was wünschst du dir?",
       btnMail:"Per E-Mail senden", btnWa:"Per WhatsApp", required:"* Pflichtfelder",
+      btnSending:"Wird gesendet …", sendError:"Das hat leider nicht geklappt. Bitte schreib mir direkt an",
       mailNote:"Lieber per E-Mail? Schreib mir direkt an",
       freueMich:"Ich freue mich auf dich, Silvia",
       thanks:"Danke.", sentTitle:"Deine Nachricht ist angekommen.",
@@ -1118,6 +1196,7 @@ class Component extends DCLogic {
       fTag:"Jour préféré", fTagPh:"p. ex. mercredi après-midi",
       fNachricht:"Votre message", fNachrichtPh:"Qu'est-ce qui vous préoccupe ? Que souhaitez-vous ?",
       btnMail:"Envoyer par e-mail", btnWa:"Par WhatsApp", required:"* Champs obligatoires",
+      btnSending:"Envoi en cours …", sendError:"Désolée, l'envoi n'a pas fonctionné. Écrivez-moi directement à",
       mailNote:"Vous préférez l'e-mail ? Écrivez-moi directement à",
       freueMich:"Au plaisir de vous rencontrer, Silvia",
       thanks:"Merci.", sentTitle:"Votre message est bien arrivé.",
@@ -1244,6 +1323,7 @@ class Component extends DCLogic {
       fTag:"Preferred day", fTagPh:"e.g. Wednesday afternoon",
       fNachricht:"Your message", fNachrichtPh:"What is on your mind? What do you wish for?",
       btnMail:"Send by e-mail", btnWa:"Via WhatsApp", required:"* Required fields",
+      btnSending:"Sending …", sendError:"Sorry, that didn't go through. Please write to me directly at",
       mailNote:"Prefer e-mail? Write to me directly at",
       freueMich:"I look forward to meeting you, Silvia",
       thanks:"Thank you.", sentTitle:"Your message has arrived.",
@@ -1427,9 +1507,19 @@ class Component extends DCLogic {
       goAngebote: () => this.go('angebote'),
       sent: this.state.sent,
       notSent: !this.state.sent,
-      // No submit button: WhatsApp is the only send path. This only catches
-      // implicit submission (Enter in a text field), which must not navigate.
-      onSubmit: (e) => { e.preventDefault(); },
+      sending: this.state.sending,
+      sendError: this.state.sendError,
+      noSendError: !this.state.sendError,
+      mailButtonLabel: this.state.sending ? t.btnSending : t.btnMail,
+      onSubmit: (e) => { e.preventDefault(); this.sendEmail(); },
+      // Ref callbacks are recreated every render, so React calls them with
+      // null and then the same element again; only a new element counts.
+      setTurnstile: (el) => {
+        if (!el || el === this.tsEl) return;
+        this.tsEl = el;
+        this.tsWidget = undefined;
+        this.renderTurnstile(el);
+      },
       langs: ['DE','FR','EN'].map(code => ({
         label: code,
         href: pagePath(code.toLowerCase(), page),
@@ -1449,7 +1539,10 @@ class Component extends DCLogic {
           textDecoration:'none',
         },
       })),
-      setForm: (el) => { this.form = el; },
+      setForm: (el) => {
+        if (el && el !== this.form) this.formStart = Date.now();
+        if (el) this.form = el;
+      },
       sendWhatsApp: () => {
         const text = this.buildEnquiry();
         if (text === null) return;

@@ -41,3 +41,6 @@ assets/whatsapp-profil-a.png
 assets/whatsapp-profil-b.png
 assets/whatsapp-profil-c.png
 assets/yss-logo.png
+
+# Azure Functions dependencies (installed by the deploy build)
+api/node_modules/
