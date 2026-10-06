@@ -1,0 +1,12 @@
+{
+  "name": "yss-prerender",
+  "private": true,
+  "type": "module",
+  "description": "Builds dist/: the site plus a static HTML file per page and language.",
+  "scripts": {
+    "build": "node prerender.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.55.0"
+  }
+}
