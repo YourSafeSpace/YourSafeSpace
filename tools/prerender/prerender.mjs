@@ -30,7 +30,7 @@ const SITE = 'https://www.yoursafespace.ch';
 const LANGS = ['de', 'fr', 'en'];
 // Files and folders that make up the public site. Keep in sync with
 // staticwebapp.config.json's navigationFallback exclude list.
-const PUBLIC = ['index.html', 'support.js', 'robots.txt', 'sitemap.xml', 'staticwebapp.config.json', 'assets'];
+const PUBLIC = ['index.html', 'support.js', 'robots.txt', 'sitemap.xml', 'llms.txt', 'staticwebapp.config.json', 'assets'];
 
 const source = await readFile(join(ROOT, 'index.html'), 'utf8');
 const PAGES = JSON.parse(source.match(/const PAGES = (\[[^\]]*\]);/)[1].replace(/'/g, '"'));
