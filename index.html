@@ -6,20 +6,23 @@
 <!-- Pages live at /de/angebote etc. and are all served by this one file, so
      relative asset paths must resolve from the site root. -->
 <base href="/">
+<!-- seo:start: per-page tags. applySeo() keeps them current in the browser and
+     tools/prerender bakes each page's values into its static HTML. -->
 <title>Psychologische Beratung Zürich – Your Safe Space | Silvia Soret</title>
 <meta name="description" content="Psychologische Beratung in Zürich für Erwachsene & Paare: Einzelberatung, Paar- und Beziehungsberatung mit Silvia Soret – in der Zürcher Altstadt oder online. Auf Deutsch, Englisch und Französisch.">
 <link rel="canonical" href="https://www.yoursafespace.ch/de/">
 <link rel="alternate" hreflang="de" href="https://www.yoursafespace.ch/de/">
 <link rel="alternate" hreflang="en" href="https://www.yoursafespace.ch/en/">
 <link rel="alternate" hreflang="fr" href="https://www.yoursafespace.ch/fr/">
-<link rel="alternate" hreflang="x-default" href="https://www.yoursafespace.ch/">
+<link rel="alternate" hreflang="x-default" href="https://www.yoursafespace.ch/de/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Your Safe Space">
+<meta property="og:locale" content="de_CH">
 <meta property="og:title" content="Psychologische Beratung Zürich – Your Safe Space">
 <meta property="og:description" content="Einzelberatung, Paar- und Beziehungsberatung mit Silvia Soret in der Zürcher Altstadt oder online.">
 <meta property="og:url" content="https://www.yoursafespace.ch/de/">
 <meta property="og:image" content="https://www.yoursafespace.ch/assets/hero-portrait-final.jpg">
-<script type="application/ld+json">
+<script type="application/ld+json" id="ld-json">
 {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
@@ -44,6 +47,7 @@
   "founder": { "@type": "Person", "name": "Silvia Soret" }
 }
 </script>
+<!-- seo:end -->
 <script src="/support.js"></script>
 </head>
 <body>
@@ -778,7 +782,13 @@ class Component extends DCLogic {
     this.applyVars();
     try{
       const r = this.readRoute();
-      this.setState({ lang: r.lang || this.initLang(), page: r.page }, () => this.syncUrl(true));
+      this.setState({ lang: r.lang || this.initLang(), page: r.page }, () => {
+        this.syncUrl(true);
+        // Pre-rendered pages (tools/prerender) carry a static copy of the page
+        // for crawlers and first paint; the live app replaces it from here on.
+        const ssr = document.getElementById('ssr');
+        if(ssr) ssr.remove();
+      });
     }catch(e){}
     this._pop = () => { const r = this.readRoute(); this.setState({ lang: r.lang || this.state.lang, page: r.page, menuOpen: false }, () => this.syncUrl(true)); };
     window.addEventListener('popstate', this._pop);
@@ -888,9 +898,87 @@ class Component extends DCLogic {
       tag('link[rel="alternate"][hreflang="' + l + '"]', () => { const e = d.createElement('link'); e.rel = 'alternate'; e.hreflang = l; return e; }).href = SITE + pagePath(l, page);
     });
     const xd = head.querySelector('link[hreflang="x-default"]');
-    if(xd) xd.href = SITE + (page === 'home' ? '/' : pagePath('de', page));
+    if(xd) xd.href = SITE + pagePath('de', page);
     const og = (p, v) => { const e = head.querySelector('meta[property="' + p + '"]'); if(e) e.content = v; };
     og('og:title', meta[0]); og('og:description', meta[1]); og('og:url', SITE + pagePath(lang, page));
+    og('og:locale', { de: 'de_CH', fr: 'fr_CH', en: 'en_GB' }[lang] || 'de_CH');
+    const ld = head.querySelector('#ld-json');
+    if(ld) ld.textContent = JSON.stringify(this.structuredData(lang, page, meta), null, 1);
+  }
+
+  // schema.org data for search engines and AI assistants, in the page's
+  // language: the practice, Silvia, the services with prices, and the page.
+  structuredData(lang, page, meta){
+    const t = this.texts()[lang] || this.texts().de;
+    const url = SITE + pagePath(lang, page);
+    const languages = [['de', 'German'], ['fr', 'French'], ['en', 'English']]
+      .map(([code, name]) => ({ '@type': 'Language', name, alternateName: code }));
+    const offer = (name, price) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name, provider: { '@id': SITE + '/#practice' } },
+      ...(price ? { price, priceCurrency: 'CHF', description: t.pro60 } : {}),
+    });
+    return {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'ProfessionalService',
+          '@id': SITE + '/#practice',
+          name: 'Your Safe Space – ' + t.taglineA,
+          alternateName: 'Your Safe Space',
+          description: SEO[lang].home[1],
+          url: SITE + pagePath(lang, 'home'),
+          logo: SITE + '/assets/logo-yss-eucalyptus.png',
+          image: [SITE + '/assets/hero-portrait-final.jpg', SITE + '/assets/foto-praxis.png'],
+          email: 'silvia@yoursafespace.ch',
+          telephone: '+41783216104',
+          priceRange: 'CHF 180–220',
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: 'Stüssihofstatt 7',
+            postalCode: '8001',
+            addressLocality: 'Zürich',
+            addressRegion: 'ZH',
+            addressCountry: 'CH',
+          },
+          areaServed: { '@type': 'City', name: 'Zürich' },
+          availableLanguage: languages,
+          founder: { '@id': SITE + '/#silvia' },
+          hasOfferCatalog: {
+            '@type': 'OfferCatalog',
+            name: t.angEyebrow,
+            itemListElement: [offer(t.einzelTitle, '180'), offer(t.paarH, '220'), offer(t.bezH), offer(t.kindH)],
+          },
+        },
+        {
+          '@type': 'Person',
+          '@id': SITE + '/#silvia',
+          name: 'Silvia Soret',
+          url: SITE + pagePath(lang, 'ueber'),
+          image: SITE + '/assets/ueber-portrait.jpg',
+          worksFor: { '@id': SITE + '/#practice' },
+          knowsLanguage: languages,
+        },
+        {
+          '@type': 'WebSite',
+          '@id': SITE + '/#website',
+          url: SITE + '/',
+          name: 'Your Safe Space',
+          inLanguage: ['de', 'fr', 'en'],
+          publisher: { '@id': SITE + '/#practice' },
+        },
+        {
+          '@type': page === 'kontakt' ? 'ContactPage' : page === 'ueber' ? 'AboutPage' : 'WebPage',
+          '@id': url + '#webpage',
+          url,
+          name: meta[0],
+          description: meta[1],
+          inLanguage: lang,
+          isPartOf: { '@id': SITE + '/#website' },
+          about: { '@id': SITE + '/#practice' },
+        },
+      ],
+    };
   }
 
   // Links are real <a href> so search engines can follow them; plain clicks

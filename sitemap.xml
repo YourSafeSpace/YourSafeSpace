@@ -5,21 +5,21 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.yoursafespace.ch/de/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.yoursafespace.ch/en/"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://www.yoursafespace.ch/fr/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.yoursafespace.ch/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.yoursafespace.ch/de/"/>
   </url>
   <url>
     <loc>https://www.yoursafespace.ch/en/</loc>
     <xhtml:link rel="alternate" hreflang="de" href="https://www.yoursafespace.ch/de/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.yoursafespace.ch/en/"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://www.yoursafespace.ch/fr/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.yoursafespace.ch/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.yoursafespace.ch/de/"/>
   </url>
   <url>
     <loc>https://www.yoursafespace.ch/fr/</loc>
     <xhtml:link rel="alternate" hreflang="de" href="https://www.yoursafespace.ch/de/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.yoursafespace.ch/en/"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://www.yoursafespace.ch/fr/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.yoursafespace.ch/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.yoursafespace.ch/de/"/>
   </url>
   <url>
     <loc>https://www.yoursafespace.ch/de/angebote</loc>
