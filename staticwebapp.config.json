@@ -1,11 +1,20 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/assets/*", "/support.js", "/robots.txt", "/sitemap.xml"]
+    "exclude": [
+      "/assets/*",
+      "/support.js",
+      "/robots.txt",
+      "/sitemap.xml",
+      "/llms.txt"
+    ]
   },
   "globalHeaders": {
     "X-Frame-Options": "DENY",
     "Content-Security-Policy": "frame-ancestors 'none'",
     "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  },
+  "mimeTypes": {
+    ".txt": "text/plain; charset=utf-8"
   }
 }
