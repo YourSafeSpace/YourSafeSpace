@@ -93,6 +93,7 @@
     [data-r="kontakt-grid"]{grid-template-columns:1fr !important;gap:48px !important}
     [data-r="kontakt-grid"] > div:first-child{order:2 !important}
     [data-r="kontakt-grid"] > div:last-child{order:1 !important}
+    [data-r="booking"]{padding:40px 16px !important;margin-bottom:64px !important}
     [data-r="form-2col"]{grid-template-columns:1fr !important}
     [data-r="footer-grid"]{grid-template-columns:1fr !important}
     [data-r="body-copy"] > p, [data-r="body-copy-p"]{font-size:15.5px !important;line-height:1.62 !important}
@@ -516,6 +517,16 @@
         <h1 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:var(--h-56);line-height:1.06;color:#333a2d;margin:0;letter-spacing:-.01em;">{{ t.kontaktTitle }}</h1>
       </div>
 
+      <sc-if value="{{ hasBooking }}" hint-placeholder-val="{{ true }}">
+      <div id="erstgespraech" data-r="booking" style="background:#F3F1EA;padding:56px 48px;margin:0 0 90px;text-align:center;">
+        <div style="font-family:Manrope,sans-serif;font-size:11px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:#AD8A4E;margin-bottom:18px;">{{ t.bookEyebrow }}</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:36px;line-height:1.2;color:#333a2d;margin:0 0 16px;">{{ t.bookTitle }}</h2>
+        <p style="margin:0 auto 30px;max-width:520px;color:#54584d;font-size:16px;line-height:1.75;text-wrap:balance;">{{ t.bookText }}</p>
+        <a href="{{ bookingUrl }}" target="_blank" rel="noopener" style="display:inline-block;background:#4E6257;border-radius:6px;padding:17px 34px;font-family:Manrope,sans-serif;font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#FBFAF6;text-decoration:none;" style-hover="background:#3F5147;">{{ t.bookBtn }} ↗</a>
+        <p style="margin:18px 0 0;font-size:13px;line-height:1.6;color:#6a6f63;">{{ t.bookNote }}</p>
+      </div>
+      </sc-if>
+
       <div data-r="kontakt-grid" style="display:grid;grid-template-columns:1fr 1.15fr;gap:72px;align-items:start;">
         <div>
           <div style="width:100%;max-width:400px;margin-bottom:40px;">
@@ -743,6 +754,10 @@
   &quot;radius&quot;: { &quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 0, &quot;min&quot;: 0, &quot;max&quot;: 16, &quot;step&quot;: 1, &quot;unit&quot;: &quot;px&quot;, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Theme&quot; }
 }">
 const SITE = 'https://www.yoursafespace.ch';
+// Public "Bookings with me" page (Silvia's Outlook) for the free 15-minute
+// first call. Microsoft forbids framing it, so the button opens it in a new
+// tab. Leave empty to hide the booking block on the contact page.
+const BOOKINGS_URL = 'https://bookings.cloud.microsoft/bookwithme/user/428e7d7f5bc14b2c8ff77e21f7fc8179@yoursafespace.ch/meetingtype/RWIfT8dfsk6PFTQ7g9SqEQ2?anonymous&ismsaljsauthenabled&ep=mlink';
 const PAGES = ['home', 'angebote', 'ueber', 'konditionen', 'kontakt', 'impressum', 'disclaimer'];
 const pagePath = (lang, page) => '/' + lang + '/' + (page === 'home' ? '' : page);
 const SEO = {
@@ -751,7 +766,7 @@ const SEO = {
     angebote:    ['Angebot: Einzel-, Paar- & Beziehungsberatung Zürich | Your Safe Space', 'Einzelberatung für Erwachsene, Paar- und Beziehungsberatung sowie Begleitung, wenn ein Kind alles verändert – vor Ort in Zürich oder online.'],
     ueber:       ['Über mich – Silvia Soret | Your Safe Space Zürich', 'Silvia Soret: Werdegang, Ausbildung und Haltung hinter Your Safe Space, der psychologischen Beratung in der Zürcher Altstadt.'],
     konditionen: ['Konditionen & Preise – Psychologische Beratung Zürich | Your Safe Space', 'Preise, Sitzungsdauer, Absage- und Zahlungsbedingungen für Einzel- und Paarberatung bei Your Safe Space in Zürich.'],
-    kontakt:     ['Kontakt & Termin anfragen | Your Safe Space Zürich', 'Termin für psychologische Beratung anfragen: Stüssihofstatt 7, 8001 Zürich – per WhatsApp oder E-Mail an Silvia Soret.'],
+    kontakt:     ['Kontakt & Termin anfragen | Your Safe Space Zürich', 'Kurzes Erstgespräch direkt online buchen oder einen Termin für psychologische Beratung anfragen: Stüssihofstatt 7, 8001 Zürich – per WhatsApp oder E-Mail an Silvia Soret.'],
     impressum:   ['Impressum & Datenschutz | Your Safe Space', 'Impressum und Datenschutzerklärung von Your Safe Space – Silvia Soret, Zürich.'],
     disclaimer:  ['Disclaimer | Your Safe Space', 'Rechtliche Hinweise und Haftungsausschluss von Your Safe Space – Silvia Soret, Zürich.'],
   },
@@ -760,7 +775,7 @@ const SEO = {
     angebote:    ['Services: Individual, Couples & Relationship Counselling Zurich | Your Safe Space', 'Individual counselling for adults, couples and relationship counselling, and support when a baby changes everything – in Zurich or online.'],
     ueber:       ['About me – Silvia Soret | Your Safe Space Zurich', 'Silvia Soret: background, training and approach behind Your Safe Space, psychological counselling in Zurich\'s old town.'],
     konditionen: ['Fees & Terms – Counselling in Zurich | Your Safe Space', 'Fees, session length, cancellation and payment terms for individual and couples counselling at Your Safe Space in Zurich.'],
-    kontakt:     ['Contact & Book a Session | Your Safe Space Zurich', 'Request a counselling session: Stüssihofstatt 7, 8001 Zurich – via WhatsApp or e-mail to Silvia Soret.'],
+    kontakt:     ['Contact & Book a Session | Your Safe Space Zurich', 'Book a short first call online or request a counselling session: Stüssihofstatt 7, 8001 Zurich – via WhatsApp or e-mail to Silvia Soret.'],
     impressum:   ['Legal Notice & Privacy | Your Safe Space', 'Legal notice and privacy policy of Your Safe Space – Silvia Soret, Zurich.'],
     disclaimer:  ['Disclaimer | Your Safe Space', 'Legal disclaimer of Your Safe Space – Silvia Soret, Zurich.'],
   },
@@ -769,7 +784,7 @@ const SEO = {
     angebote:    ['Offre : conseil individuel, de couple et relationnel à Zurich | Your Safe Space', 'Conseil individuel pour adultes, conseil de couple et relationnel, accompagnement quand un enfant change tout – à Zurich ou en ligne.'],
     ueber:       ['À propos – Silvia Soret | Your Safe Space Zurich', 'Silvia Soret : parcours, formation et approche derrière Your Safe Space, conseil psychologique dans la vieille ville de Zurich.'],
     konditionen: ['Tarifs & conditions – Conseil psychologique Zurich | Your Safe Space', 'Tarifs, durée des séances, conditions d\'annulation et de paiement pour le conseil individuel et de couple à Zurich.'],
-    kontakt:     ['Contact & prise de rendez-vous | Your Safe Space Zurich', 'Demander un rendez-vous : Stüssihofstatt 7, 8001 Zurich – par WhatsApp ou e-mail à Silvia Soret.'],
+    kontakt:     ['Contact & prise de rendez-vous | Your Safe Space Zurich', 'Réserver un court premier entretien en ligne ou demander un rendez-vous : Stüssihofstatt 7, 8001 Zurich – par WhatsApp ou e-mail à Silvia Soret.'],
     impressum:   ['Mentions légales & confidentialité | Your Safe Space', 'Mentions légales et politique de confidentialité de Your Safe Space – Silvia Soret, Zurich.'],
     disclaimer:  ['Avertissement juridique | Your Safe Space', 'Avertissement juridique de Your Safe Space – Silvia Soret, Zurich.'],
   },
@@ -1082,6 +1097,10 @@ class Component extends DCLogic {
       btnMail:"Per E-Mail senden", btnWa:"Per WhatsApp", required:"* Pflichtfelder",
       mailNote:"Lieber per E-Mail? Schreib mir direkt an",
       freueMich:"Ich freue mich auf dich, Silvia",
+      bookEyebrow:"Kostenloses Erstgespräch", bookTitle:"15 Minuten zum Kennenlernen",
+      bookText:"Ein kurzes, kostenloses und unverbindliches Gespräch, um zu schauen, ob wir zusammenpassen. Wähle einfach einen freien Termin aus.",
+      bookBtn:"Freie Termine anzeigen",
+      bookNote:"Die Terminbuchung öffnet sich in einem neuen Fenster (Microsoft Bookings). Bitte keine Gesundheitsangaben ins Notizfeld.",
       thanks:"Danke.", sentTitle:"Deine Nachricht ist angekommen.",
       sentText:"Ich melde mich so bald wie möglich bei dir – meist innerhalb von zwei Werktagen. Bis dahin: Sei gut zu dir.",
       notfall:"Your Safe Space ist kein Notfalldienst. Bei akuten psychischen Krisen wende dich bitte an die Dargebotene Hand (Tel. 143) oder den ärztlichen Notfalldienst des Kt. Zürichs 24/7 (Tel. 0800 33 66 55).",
@@ -1208,6 +1227,10 @@ class Component extends DCLogic {
       btnMail:"Envoyer par e-mail", btnWa:"Par WhatsApp", required:"* Champs obligatoires",
       mailNote:"Vous préférez l'e-mail ? Écrivez-moi directement à",
       freueMich:"Au plaisir de vous rencontrer, Silvia",
+      bookEyebrow:"Premier entretien gratuit", bookTitle:"15 minutes pour faire connaissance",
+      bookText:"Un court échange gratuit et sans engagement, pour voir si nous sommes faits pour travailler ensemble. Choisissez simplement un créneau libre.",
+      bookBtn:"Voir les créneaux libres",
+      bookNote:"La réservation s'ouvre dans une nouvelle fenêtre (Microsoft Bookings). Merci de ne pas indiquer d'informations de santé dans le champ de notes.",
       thanks:"Merci.", sentTitle:"Votre message est bien arrivé.",
       sentText:"Je vous réponds dès que possible – en général dans les deux jours ouvrables. D'ici là : prenez soin de vous.",
       notfall:"Your Safe Space n'est pas un service d'urgence. En cas de crise psychique aiguë, veuillez vous adresser à La Main Tendue (tél. 143) ou au service d'urgence médicale du canton de Zurich, 24h/24 (tél. 0800 33 66 55).",
@@ -1334,6 +1357,10 @@ class Component extends DCLogic {
       btnMail:"Send by e-mail", btnWa:"Via WhatsApp", required:"* Required fields",
       mailNote:"Prefer e-mail? Write to me directly at",
       freueMich:"I look forward to meeting you, Silvia",
+      bookEyebrow:"Free first call", bookTitle:"15 minutes to get to know each other",
+      bookText:"A short, free, no-obligation call to see whether we are a good fit. Just pick a free slot.",
+      bookBtn:"Show free slots",
+      bookNote:"Booking opens in a new window (Microsoft Bookings). Please don't put any health details in the notes field.",
       thanks:"Thank you.", sentTitle:"Your message has arrived.",
       sentText:"I will get back to you as soon as possible – usually within two working days. Until then: be kind to yourself.",
       notfall:"Your Safe Space is not an emergency service. In an acute psychological crisis please contact Die Dargebotene Hand (tel. 143) or the medical emergency service of the Canton of Zurich, 24/7 (tel. 0800 33 66 55).",
@@ -1467,7 +1494,7 @@ class Component extends DCLogic {
       { n:'05', title:'Hosting & Server-Log-Dateien', text:'Diese Website wird bei Novatrend Services GmbH (Schweiz) gehostet. Der Provider erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien, die Ihr Browser übermittelt:\n\n– Browsertyp und Browserversion\n– verwendetes Betriebssystem\n– Referrer-URL\n– Hostname des zugreifenden Rechners\n– Zeitpunkt der Serveranfrage\n\nDiese Daten werden zu statistischen Zwecken und zur Sicherstellung des störungsfreien Betriebs gespeichert und sind nicht bestimmten Personen zuordenbar. Eine Zusammenführung mit anderen Datenquellen findet nicht statt. Ich behalte mir vor, diese Daten nachträglich zu prüfen, wenn konkrete Anhaltspunkte für eine rechtswidrige Nutzung bestehen. Datenschutzerklärung des Providers: novatrend.ch/de/datenschutz' },
       { n:'06', title:'Kontaktformular', text:'Wenn Sie mir über das Kontaktformular eine Anfrage senden, werden Ihre Angaben aus dem Formular inklusive der dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen gespeichert. Diese Daten gebe ich nicht ohne Ihre Einwilligung weiter. Die Daten werden gelöscht, sobald sie für den Zweck nicht mehr erforderlich sind und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.' },
       { n:'07', title:'Kontakt per E-Mail und WhatsApp', text:'Wenn Sie mich per E-Mail oder über WhatsApp kontaktieren, werden die von Ihnen übermittelten Angaben (Name, E-Mail-Adresse bzw. Mobilnummer, Inhalt der Nachricht) zur Bearbeitung Ihres Anliegens verarbeitet.\n\nWhatsApp ist ein Dienst der WhatsApp Ireland Limited, 4 Grand Canal Square, Dublin 2, Irland. Bei der Nutzung von WhatsApp können Daten – insbesondere Metadaten wie Mobilnummer, Zeitpunkt und Häufigkeit der Kommunikation – durch WhatsApp verarbeitet und teilweise auf Servern ausserhalb der Schweiz und der EU bearbeitet werden. Auf diese Verarbeitung habe ich keinen Einfluss. Wenn Sie das nicht wünschen, nutzen Sie bitte E-Mail oder das Kontaktformular.' },
-      { n:'08', title:'Terminvereinbarung & Rechnungsstellung', text:'Für die Vereinbarung von Terminen und die Rechnungsstellung verarbeite ich die dafür notwendigen Daten (Name, Kontaktdaten, Termin- und Rechnungsangaben). Rechnungs- und Buchhaltungsunterlagen bewahre ich während der gesetzlichen Aufbewahrungsfrist von zehn Jahren auf.' },
+      { n:'08', title:'Terminvereinbarung & Rechnungsstellung', text:'Für die Vereinbarung von Terminen und die Rechnungsstellung verarbeite ich die dafür notwendigen Daten (Name, Kontaktdaten, Termin- und Rechnungsangaben). Rechnungs- und Buchhaltungsunterlagen bewahre ich während der gesetzlichen Aufbewahrungsfrist von zehn Jahren auf.\n\nFür die Online-Buchung des Erstgesprächs nutze ich Microsoft Bookings, einen Dienst der Microsoft Ireland Operations Limited, One Microsoft Place, South County Business Park, Leopardstown, Dublin 18, Irland. Die Buchungsseite ist eine Seite von Microsoft und öffnet sich erst, wenn Sie auf «Freie Termine anzeigen» klicken. Bei einer Buchung werden die von Ihnen eingegebenen Angaben (Name, E-Mail-Adresse, ggf. Telefonnummer und Notiz) sowie der gewählte Termin an Microsoft übermittelt und in meinem Microsoft-365-Konto gespeichert; eine Bearbeitung ausserhalb der Schweiz und der EU kann nicht ausgeschlossen werden. Bitte geben Sie bei der Buchung keine Gesundheitsangaben an. Datenschutzerklärung von Microsoft: privacy.microsoft.com' },
       { n:'09', title:'Schriften (Google Fonts)', text:'Diese Website verwendet Schriften des Dienstes Google Fonts (Google Ireland Limited). Zur Darstellung der Schriften stellt Ihr Browser eine Verbindung zu einem Google-Server her und lädt die benötigte Schriftdatei. Dadurch erhält Google die Information, dass diese Website über Ihre IP-Adresse aufgerufen wurde. Weitere Informationen: policies.google.com/privacy' },
       { n:'10', title:'Online-Beratung per Videokonferenz', text:'Für Beratungen auf Distanz können Audio- und Videokonferenzdienste eingesetzt werden. Ich nutze dafür nur Dienste, für die ein angemessenes Datenschutzniveau gewährleistet ist. Neben dieser Datenschutzerklärung gelten die Nutzungs- und Datenschutzbestimmungen des jeweiligen Dienstes. Gespräche werden nicht aufgezeichnet.' },
       { n:'11', title:'Cookies', text:'Diese Website setzt keine Cookies zu Analyse- oder Werbezwecken ein. Es findet kein Tracking und keine Erstellung von Nutzungsprofilen statt. Es werden keine Analyse- oder Marketingdienste (z. B. Google Analytics, Google Ads, Social-Media-Pixel) verwendet.' },
@@ -1513,6 +1540,8 @@ class Component extends DCLogic {
       monthLabel: (() => { const m=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']; return m[new Date().getMonth()]; })(),
       nextMonthLabel: (() => { const m=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']; return m[(new Date().getMonth()+1)%12]; })(),
       goAngebote: () => this.go('angebote'),
+      hasBooking: !!BOOKINGS_URL,
+      bookingUrl: BOOKINGS_URL,
       sent: this.state.sent,
       notSent: !this.state.sent,
       // No submit button: WhatsApp is the only send path. This only catches
