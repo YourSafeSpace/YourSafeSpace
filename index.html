@@ -28,10 +28,9 @@
     [data-r="hero-panel"]{padding:28px 8% 52px !important}
     [data-r="hero-tagline"]{margin-bottom:16px !important}
     [data-r="hero-title"]{margin-bottom:28px !important}
-    [data-r="hero-sticker"]{width:134px !important;height:134px !important;bottom:16px !important;right:16px !important;padding:14px 12px !important}
-    [data-r="hero-sticker-top"]{font-size:7px !important;letter-spacing:.14em !important;margin-bottom:5px !important}
-    [data-r="hero-sticker-main"]{font-size:14px !important}
-    [data-r="hero-sticker-cta"]{font-size:7px !important;letter-spacing:.12em !important;margin-top:6px !important}
+    [data-r="hero-sticker"]{width:162px !important;height:162px !important;bottom:16px !important;right:16px !important;padding:18px 15px !important}
+    [data-r="hero-sticker-top"]{font-size:8.5px !important;letter-spacing:.14em !important;margin-bottom:8px !important}
+    [data-r="hero-sticker-main"]{font-size:15px !important}
     [data-r="themen-row"]{grid-template-columns:1fr !important;gap:6px !important}
     [data-r="split-sticky"]{grid-template-columns:1fr !important}
     [data-r="sticky-inner"]{position:static !important;top:auto !important}
@@ -124,10 +123,9 @@
       <div style="position:relative;overflow:hidden;background:#E7E1D7;">
         <img data-r="hero-photo" src="assets/hero-portrait-final.jpg" alt="Silvia – Your Safe Space" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" />
         <div style="position:absolute;top:0;bottom:0;right:0;width:14%;background:linear-gradient(90deg, rgba(216,211,196,0) 0%, rgba(216,211,196,.35) 100%);pointer-events:none;"></div>
-        <button data-r="hero-sticker" onClick="{{ goKontakt }}" aria-label="{{ t.stickerTop }} – {{ t.stickerMain }}" style="position:absolute;bottom:40px;right:40px;width:190px;height:190px;border-radius:50%;border:1.5px solid #AD8A4E;background:#EDE9DE;box-shadow:0 10px 30px rgba(51,58,45,.18);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px 22px;transform:rotate(-8deg);">
-          <span data-r="hero-sticker-top" style="font-family:Manrope,sans-serif;font-size:8.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#8E6F38;line-height:1.5;margin-bottom:8px;">{{ t.stickerTop }}</span>
-          <span data-r="hero-sticker-main" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:19px;line-height:1.18;color:#4E6257;letter-spacing:-.005em;">{{ t.stickerMain }}</span>
-          <span data-r="hero-sticker-cta" style="font-family:Manrope,sans-serif;font-size:8.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#AD8A4E;margin-top:10px;">{{ t.stickerCta }}</span>
+        <button data-r="hero-sticker" onClick="{{ goBooking }}" aria-label="{{ t.stickerTop }} – {{ t.stickerMain }}" style="position:absolute;bottom:40px;right:40px;width:228px;height:228px;border-radius:50%;border:none;background:#EDE9DE;box-shadow:0 10px 30px rgba(51,58,45,.18);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 26px;transform:rotate(-8deg);">
+          <span data-r="hero-sticker-top" style="font-family:Manrope,sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#8E6F38;line-height:1.5;margin-bottom:12px;">{{ t.stickerTop }}</span>
+          <span data-r="hero-sticker-main" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:21px;line-height:1.22;color:#4E6257;letter-spacing:-.005em;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;text-decoration-color:rgba(173,138,78,.55);">{{ t.stickerMain }}</span>
         </button>
       </div>
       <div data-r="hero-panel" style="background:#D5DCCF;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:90px 9%;">
@@ -803,7 +801,7 @@ class Component extends DCLogic {
     const de = {
       navHome:"Startseite", navAngebot:"Angebot", navUeber:"Über mich", navKond:"Konditionen", navKontakt:"Kontakt",
       availNote:"Aktuell verfügbare Plätze", availCta:"Anfragen",
-      stickerTop:"Aktuell freie Plätze", stickerMain:"Kostenloses Kennenlern-Gespräch", stickerCta:"Jetzt buchen",
+      stickerTop:"Aktuell freie Plätze", stickerMain:"Buche dein kostenloses Erstgespräch",
       tagline:"Psychologische Beratung für Erwachsene & Paare", byLine:"von Silvia Soret",
       taglineA:"Psychologische Beratung", taglineB:"für Erwachsene & Paare",
       heroTitle:"Wo du dich fallen lässt\u00a0– und dich selbst findest.",
@@ -930,7 +928,7 @@ class Component extends DCLogic {
     const fr = {
       navHome:"Accueil", navAngebot:"Prestation", navUeber:"À propos", navKond:"Tarifs", navKontakt:"Contact",
       availNote:"Actuellement places disponible", availCta:"Demander",
-      stickerTop:"Places disponibles", stickerMain:"Premier entretien gratuit", stickerCta:"Réserver",
+      stickerTop:"Places disponibles", stickerMain:"Réservez votre premier entretien gratuit",
       tagline:"Conseil psychologique pour adultes et couples", byLine:"par Silvia Soret",
       taglineA:"Conseil psychologique", taglineB:"pour adultes et couples",
       heroTitle:"Là où vous lâchez prise – et où vous vous retrouvez.",
@@ -1057,7 +1055,7 @@ class Component extends DCLogic {
     const en = {
       navHome:"Home", navAngebot:"Services", navUeber:"About me", navKond:"Fees", navKontakt:"Contact",
       availNote:"Places currently available", availCta:"Enquire",
-      stickerTop:"Places available now", stickerMain:"Free introductory call", stickerCta:"Book now",
+      stickerTop:"Places available now", stickerMain:"Book your free first call",
       tagline:"Psychological counselling for adults and couples", byLine:"by Silvia Soret",
       taglineA:"Psychological counselling", taglineB:"for adults and couples",
       heroTitle:"Where you can let go – and find yourself.",
@@ -1308,6 +1306,9 @@ class Component extends DCLogic {
       isKontakt: page==='kontakt',
       goHome: () => this.go('home'),
       goKontakt: () => this.go('kontakt'),
+      // Booking: set BOOKING_URL to the Microsoft Bookings page once it is
+      // published. While it is empty the sticker falls back to the contact page.
+      goBooking: () => { const u = window.BOOKING_URL; if (u) { window.open(u, '_blank', 'noopener'); } else { this.go('kontakt'); } },
       monthLabel: (() => { const m=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']; return m[new Date().getMonth()]; })(),
       nextMonthLabel: (() => { const m=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']; return m[(new Date().getMonth()+1)%12]; })(),
       goAngebote: () => this.go('angebote'),
