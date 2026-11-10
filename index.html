@@ -78,6 +78,9 @@
     [data-r="hero-panel"]{padding:28px 8% 52px !important}
     [data-r="hero-tagline"]{margin-bottom:16px !important}
     [data-r="hero-title"]{margin-bottom:28px !important}
+    [data-r="hero-sticker"]{width:162px !important;height:162px !important;bottom:16px !important;right:16px !important;padding:16px 16px !important}
+    [data-r="hero-sticker-top"]{font-size:9.5px !important;letter-spacing:.08em !important;margin-bottom:9px !important}
+    [data-r="hero-sticker-main"]{font-size:15px !important}
     [data-r="themen-row"]{grid-template-columns:1fr !important;gap:6px !important}
     [data-r="split-sticky"]{grid-template-columns:1fr !important}
     [data-r="sticky-inner"]{position:static !important;top:auto !important}
@@ -157,20 +160,15 @@
   <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
   <main data-screen-label="Startseite">
 
-    <!-- VERFÜGBARKEITS-HINWEIS -->
-    <section style="background:#EDE9DE;">
-      <div style="max-width:1400px;margin:0 auto;padding:7px 40px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;">
-        <span style="font-family:Manrope,sans-serif;font-size:13.5px;font-weight:500;letter-spacing:.02em;color:#4c4941;">{{ t.availNote }}</span>
-        <button onClick="{{ goKontakt }}" style="background:#AD8A4E;border:none;border-radius:4px;padding:6px 15px;cursor:pointer;font-family:Manrope,sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#FBFAF6;" style-hover="background:#8E6F38;">{{ t.availCta }}</button>
-      </div>
-    </section>
-
     <!-- HERO -->
     <section data-r="hero" style="display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 90px);">
       <div style="position:relative;overflow:hidden;background:#E7E1D7;">
         <img data-r="hero-photo" src="assets/hero-portrait-final.jpg" alt="Silvia – Your Safe Space" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" />
         <div style="position:absolute;top:0;bottom:0;right:0;width:14%;background:linear-gradient(90deg, rgba(216,211,196,0) 0%, rgba(216,211,196,.35) 100%);pointer-events:none;"></div>
-
+        <button data-r="hero-sticker" onClick="{{ goBooking }}" aria-label="{{ t.stickerTop }} – {{ t.stickerMain }}" style="position:absolute;bottom:40px;right:40px;width:228px;height:228px;border-radius:50%;border:none;background:#EDE9DE;box-shadow:0 10px 30px rgba(51,58,45,.18);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 32px;transform:rotate(-8deg);">
+          <span data-r="hero-sticker-top" style="font-family:Manrope,sans-serif;font-size:13px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#8E6F38;line-height:1.45;margin-bottom:13px;">{{ t.stickerTop }}</span>
+          <span data-r="hero-sticker-main" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:21px;line-height:1.22;color:#4E6257;letter-spacing:-.005em;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;text-decoration-color:rgba(173,138,78,.55);">{{ t.stickerMain }}</span>
+        </button>
       </div>
       <div data-r="hero-panel" style="background:#D5DCCF;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:90px 9%;">
         <img data-r="hero-logo" src="assets/logo-yss-eucalyptus.png" alt="Your Safe Space" style="width:380px;height:auto;margin-bottom:14px;" />
@@ -999,7 +997,7 @@ class Component extends DCLogic {
   texts(){
     const de = {
       navHome:"Startseite", navAngebot:"Angebot", navUeber:"Über mich", navKond:"Konditionen", navKontakt:"Kontakt",
-      availNote:"Aktuell verfügbare Plätze", availCta:"Anfragen",
+      stickerTop:"Aktuell freie Plätze", stickerMain:"Buche dein kostenloses Erstgespräch",
       tagline:"Psychologische Beratung für Erwachsene & Paare", byLine:"von Silvia Soret",
       taglineA:"Psychologische Beratung", taglineB:"für Erwachsene & Paare",
       heroTitle:"Wo du dich fallen lässt\u00a0– und dich selbst findest.",
@@ -1125,7 +1123,7 @@ class Component extends DCLogic {
 
     const fr = {
       navHome:"Accueil", navAngebot:"Prestation", navUeber:"À propos", navKond:"Tarifs", navKontakt:"Contact",
-      availNote:"Actuellement places disponible", availCta:"Demander",
+      stickerTop:"Disponibilités immédiates", stickerMain:"Prenez rendez-vous pour un premier contact gratuit.",
       tagline:"Conseil psychologique pour adultes et couples", byLine:"par Silvia Soret",
       taglineA:"Conseil psychologique", taglineB:"pour adultes et couples",
       heroTitle:"Là où vous lâchez prise – et où vous vous retrouvez.",
@@ -1251,7 +1249,7 @@ class Component extends DCLogic {
 
     const en = {
       navHome:"Home", navAngebot:"Services", navUeber:"About me", navKond:"Fees", navKontakt:"Contact",
-      availNote:"Places currently available", availCta:"Enquire",
+      stickerTop:"Currently accepting new clients", stickerMain:"Book your free discovery\u00a0call",
       tagline:"Psychological counselling for adults and couples", byLine:"by Silvia Soret",
       taglineA:"Psychological counselling", taglineB:"for adults and couples",
       heroTitle:"Where you can let go – and find yourself.",
@@ -1510,6 +1508,9 @@ class Component extends DCLogic {
       goHome: (e) => this.linkClick(e, () => this.go('home')),
       goHomeHref: pagePath(lang.toLowerCase(), 'home'),
       goKontakt: () => this.go('kontakt'),
+      // Booking: set BOOKING_URL to the Microsoft Bookings page once it is
+      // published. While it is empty the sticker falls back to the contact page.
+      goBooking: () => { const u = window.BOOKING_URL; if (u) { window.open(u, '_blank', 'noopener'); } else { this.go('kontakt'); } },
       monthLabel: (() => { const m=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']; return m[new Date().getMonth()]; })(),
       nextMonthLabel: (() => { const m=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']; return m[(new Date().getMonth()+1)%12]; })(),
       goAngebote: () => this.go('angebote'),
