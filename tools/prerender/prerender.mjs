@@ -52,6 +52,9 @@ const origin = 'http://127.0.0.1:' + server.address().port;
 // --- render every route
 const browser = await chromium.launch();
 const context = await browser.newContext({ locale: 'de-CH', viewport: { width: 1280, height: 900 } });
+// The contact page loads Cloudflare Turnstile, whose iframe keeps the network
+// busy so "networkidle" never comes. It has no place in static HTML anyway.
+await context.route(/^https:\/\/challenges\.cloudflare\.com\//, route => route.abort());
 const sourceHead = source.slice(0, source.indexOf('</head>'));
 
 async function render(lang, page) {
