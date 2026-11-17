@@ -34,16 +34,21 @@ New top-level files that should be public must be added to `PUBLIC` in `tools/pr
 
 ## Contact form (e-mail)
 
-"Per E-Mail senden" posts the form to `/api/contact`, an Azure Function in `api/` that the Static Web App deploys alongside the site. It sends the enquiry through Azure Communication Services to `silvia@yoursafespace.ch` (fixed in `api/src/contact.js`, never taken from the request), with the visitor as reply-to.
+"Per E-Mail senden" posts the form to `/api/contact`, an Azure Function in `api/` that the Static Web App deploys alongside the site. It sends the enquiry through Microsoft Graph from Silvia's own Microsoft 365 mailbox to `silvia@yoursafespace.ch` (fixed in `api/src/contact.js`, never taken from the request), with the visitor as reply-to. It is not kept in Sent Items. No extra mail service or licence is needed.
+
+(Azure Communication Services was used first, but Microsoft is retiring it in September 2028.)
 
 Spam protection: a hidden honeypot field, a minimum fill time, Cloudflare Turnstile (loaded only on the contact page), and length/format checks. Submissions that look like bots get a fake "sent" response.
+
+Microsoft Entra app registration "Your Safe Space website" (single tenant) with the **application** permission `Microsoft Graph › Mail.Send`, admin consent granted. Ideally limited to Silvia's mailbox with Exchange RBAC for Applications.
 
 App settings (Azure portal → Static Web App → Environment variables):
 
 | Name | Value |
 |---|---|
-| `ACS_CONNECTION_STRING` | Communication Services resource → Keys → connection string |
-| `MAIL_FROM` | verified sender address, e.g. `kontakt@yoursafespace.ch` |
+| `GRAPH_TENANT_ID` | Entra → Overview → Tenant ID |
+| `GRAPH_CLIENT_ID` | app registration → Application (client) ID |
+| `GRAPH_CLIENT_SECRET` | app registration → Certificates & secrets → client secret **value** (expires: renew before the date) |
 | `TURNSTILE_SECRET` | Cloudflare Turnstile widget secret key |
 
 The Turnstile *site* key is public and set as `TURNSTILE_SITE_KEY` in `index.html`.

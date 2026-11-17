@@ -41,9 +41,9 @@ test('rejects missing, oversized and malformed fields', () => {
 
 test('always sends to the fixed recipient, whatever the request says', () => {
   const r = checkSubmission({ ...valid(), to: 'victim@example.com', recipient: 'x@y.z' });
-  const msg = buildEmail(r.fields, 'kontakt@yoursafespace.ch');
-  assert.deepEqual(msg.recipients, { to: [{ address: RECIPIENT }] });
-  assert.equal(msg.replyTo[0].address, 'anna@example.ch');
-  assert.match(msg.content.plainText, /Nachricht: Hallo\nIch hätte/);
-  assert.match(msg.content.plainText, /Kontakt per WhatsApp: Ja/);
+  const { message } = buildEmail(r.fields);
+  assert.deepEqual(message.toRecipients, [{ emailAddress: { address: RECIPIENT } }]);
+  assert.equal(message.replyTo[0].emailAddress.address, 'anna@example.ch');
+  assert.match(message.body.content, /Nachricht: Hallo\nIch hätte/);
+  assert.match(message.body.content, /Kontakt per WhatsApp: Ja/);
 });

@@ -63,7 +63,9 @@ function fail(reason, silent = false) {
   return { ok: false, reason, silent };
 }
 
-function buildEmail(fields, senderAddress) {
+// Microsoft Graph sendMail payload. Sent from Silvia's own mailbox to itself,
+// with the visitor as reply-to.
+function buildEmail(fields) {
   const name = fields.vorname + ' ' + fields.nachname;
   const rows = [
     ['Name', name],
@@ -77,16 +79,18 @@ function buildEmail(fields, senderAddress) {
   ].filter(([, value]) => value);
 
   return {
-    senderAddress,
-    recipients: { to: [{ address: RECIPIENT }] },
-    replyTo: [{ address: fields.email, displayName: name }],
-    content: {
+    message: {
       subject: 'Terminanfrage über yoursafespace.ch – ' + name,
-      plainText: 'Terminanfrage über yoursafespace.ch\n\n'
-        + rows.map(([key, value]) => key + ': ' + value).join('\n')
-        + '\n\n(Mit "Antworten" geht die Antwort direkt an ' + fields.email + '.)',
+      body: {
+        contentType: 'Text',
+        content: 'Terminanfrage über yoursafespace.ch\n\n'
+          + rows.map(([key, value]) => key + ': ' + value).join('\n')
+          + '\n\n(Mit "Antworten" geht die Antwort direkt an ' + fields.email + '.)',
+      },
+      toRecipients: [{ emailAddress: { address: RECIPIENT } }],
+      replyTo: [{ emailAddress: { address: fields.email, name } }],
     },
-    userEngagementTrackingDisabled: true,
+    saveToSentItems: false,
   };
 }
 

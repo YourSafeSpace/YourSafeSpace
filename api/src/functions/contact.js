@@ -1,27 +1,26 @@
-// POST /api/contact: sends a contact-form enquiry to Silvia by e-mail
-// through Azure Communication Services.
+// POST /api/contact: sends a contact-form enquiry to Silvia by e-mail,
+// from and to her own Microsoft 365 mailbox via Microsoft Graph.
 //
 // App settings (Static Web App > Environment variables):
-//   ACS_CONNECTION_STRING  Communication Services resource connection string
-//   MAIL_FROM              verified sender, e.g. kontakt@yoursafespace.ch
-//   TURNSTILE_SECRET       Cloudflare Turnstile secret key
+//   GRAPH_TENANT_ID      Entra tenant (directory) ID
+//   GRAPH_CLIENT_ID      app registration's application (client) ID
+//   GRAPH_CLIENT_SECRET  app registration's client secret
+//   TURNSTILE_SECRET     Cloudflare Turnstile secret key
 //
 // Never log the submitted fields: enquiries can contain health information.
 
 const { app } = require('@azure/functions');
-const { EmailClient } = require('@azure/communication-email');
-const { checkSubmission, buildEmail, MAX_BODY_BYTES } = require('../contact');
+const { checkSubmission, buildEmail, RECIPIENT, MAX_BODY_BYTES } = require('../contact');
+const { sendMail } = require('../graph');
 
 const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
-
-let emailClient;
 
 app.http('contact', {
   methods: ['POST'],
   authLevel: 'anonymous',
   handler: async (request, context) => {
-    const { ACS_CONNECTION_STRING, MAIL_FROM, TURNSTILE_SECRET } = process.env;
-    if (!ACS_CONNECTION_STRING || !MAIL_FROM || !TURNSTILE_SECRET) {
+    const { GRAPH_TENANT_ID, GRAPH_CLIENT_ID, GRAPH_CLIENT_SECRET, TURNSTILE_SECRET } = process.env;
+    if (!GRAPH_TENANT_ID || !GRAPH_CLIENT_ID || !GRAPH_CLIENT_SECRET || !TURNSTILE_SECRET) {
       context.error('contact: missing app settings');
       return reply(500, 'not-configured');
     }
@@ -44,10 +43,9 @@ app.http('contact', {
     }
 
     try {
-      emailClient ??= new EmailClient(ACS_CONNECTION_STRING);
-      const poller = await emailClient.beginSend(buildEmail(check.fields, MAIL_FROM));
-      const result = await poller.pollUntilDone();
-      if (result.status !== 'Succeeded') throw new Error('status ' + result.status);
+      await sendMail(RECIPIENT, buildEmail(check.fields), {
+        tenantId: GRAPH_TENANT_ID, clientId: GRAPH_CLIENT_ID, clientSecret: GRAPH_CLIENT_SECRET,
+      });
     } catch (err) {
       context.error('contact: send failed: ' + (err && err.message));
       return reply(502, 'send-failed');
