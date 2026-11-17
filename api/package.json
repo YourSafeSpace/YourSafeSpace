@@ -1,0 +1,11 @@
+{
+  "name": "yoursafespace-api",
+  "private": true,
+  "main": "src/functions/*.js",
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.16.0"
+  }
+}

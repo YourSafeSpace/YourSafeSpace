@@ -78,6 +78,9 @@
     [data-r="hero-panel"]{padding:28px 8% 52px !important}
     [data-r="hero-tagline"]{margin-bottom:16px !important}
     [data-r="hero-title"]{margin-bottom:28px !important}
+    [data-r="hero-sticker"]{width:162px !important;height:162px !important;bottom:16px !important;right:16px !important;padding:16px 16px !important}
+    [data-r="hero-sticker-top"]{font-size:9.5px !important;letter-spacing:.08em !important;margin-bottom:9px !important}
+    [data-r="hero-sticker-main"]{font-size:15px !important}
     [data-r="themen-row"]{grid-template-columns:1fr !important;gap:6px !important}
     [data-r="split-sticky"]{grid-template-columns:1fr !important}
     [data-r="sticky-inner"]{position:static !important;top:auto !important}
@@ -93,6 +96,7 @@
     [data-r="kontakt-grid"]{grid-template-columns:1fr !important;gap:48px !important}
     [data-r="kontakt-grid"] > div:first-child{order:2 !important}
     [data-r="kontakt-grid"] > div:last-child{order:1 !important}
+    [data-r="booking"]{padding:40px 16px !important;margin-bottom:64px !important}
     [data-r="form-2col"]{grid-template-columns:1fr !important}
     [data-r="footer-grid"]{grid-template-columns:1fr !important}
     [data-r="body-copy"] > p, [data-r="body-copy-p"]{font-size:15.5px !important;line-height:1.62 !important}
@@ -157,20 +161,15 @@
   <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
   <main data-screen-label="Startseite">
 
-    <!-- VERFÜGBARKEITS-HINWEIS -->
-    <section style="background:#EDE9DE;">
-      <div style="max-width:1400px;margin:0 auto;padding:7px 40px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;">
-        <span style="font-family:Manrope,sans-serif;font-size:13.5px;font-weight:500;letter-spacing:.02em;color:#4c4941;">{{ t.availNote }}</span>
-        <button onClick="{{ goKontakt }}" style="background:#AD8A4E;border:none;border-radius:4px;padding:6px 15px;cursor:pointer;font-family:Manrope,sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#FBFAF6;" style-hover="background:#8E6F38;">{{ t.availCta }}</button>
-      </div>
-    </section>
-
     <!-- HERO -->
     <section data-r="hero" style="display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 90px);">
       <div style="position:relative;overflow:hidden;background:#E7E1D7;">
         <img data-r="hero-photo" src="assets/hero-portrait-final.jpg" alt="Silvia – Your Safe Space" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" />
         <div style="position:absolute;top:0;bottom:0;right:0;width:14%;background:linear-gradient(90deg, rgba(216,211,196,0) 0%, rgba(216,211,196,.35) 100%);pointer-events:none;"></div>
-
+        <button data-r="hero-sticker" onClick="{{ goBooking }}" aria-label="{{ t.stickerTop }} – {{ t.stickerMain }}" style="position:absolute;bottom:40px;right:40px;width:228px;height:228px;border-radius:50%;border:none;background:#EDE9DE;box-shadow:0 10px 30px rgba(51,58,45,.18);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 32px;transform:rotate(-8deg);">
+          <span data-r="hero-sticker-top" style="font-family:Manrope,sans-serif;font-size:13px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#8E6F38;line-height:1.45;margin-bottom:13px;">{{ t.stickerTop }}</span>
+          <span data-r="hero-sticker-main" style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:21px;line-height:1.22;color:#4E6257;letter-spacing:-.005em;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;text-decoration-color:rgba(173,138,78,.55);">{{ t.stickerMain }}</span>
+        </button>
       </div>
       <div data-r="hero-panel" style="background:#D5DCCF;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:90px 9%;">
         <img data-r="hero-logo" src="assets/logo-yss-eucalyptus.png" alt="Your Safe Space" style="width:380px;height:auto;margin-bottom:14px;" />
@@ -516,6 +515,16 @@
         <h1 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:var(--h-56);line-height:1.06;color:#333a2d;margin:0;letter-spacing:-.01em;">{{ t.kontaktTitle }}</h1>
       </div>
 
+      <sc-if value="{{ hasBooking }}" hint-placeholder-val="{{ true }}">
+      <div id="erstgespraech" data-r="booking" style="background:#F3F1EA;padding:56px 48px;margin:0 0 90px;text-align:center;">
+        <div style="font-family:Manrope,sans-serif;font-size:11px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:#AD8A4E;margin-bottom:18px;">{{ t.bookEyebrow }}</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:36px;line-height:1.2;color:#333a2d;margin:0 0 16px;">{{ t.bookTitle }}</h2>
+        <p style="margin:0 auto 30px;max-width:520px;color:#54584d;font-size:16px;line-height:1.75;text-wrap:balance;">{{ t.bookText }}</p>
+        <a href="{{ bookingUrl }}" target="_blank" rel="noopener" style="display:inline-block;background:#4E6257;border-radius:6px;padding:17px 34px;font-family:Manrope,sans-serif;font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#FBFAF6;text-decoration:none;" style-hover="background:#3F5147;">{{ t.bookBtn }} ↗</a>
+        <p style="margin:18px 0 0;font-size:13px;line-height:1.6;color:#6a6f63;">{{ t.bookNote }}</p>
+      </div>
+      </sc-if>
+
       <div data-r="kontakt-grid" style="display:grid;grid-template-columns:1fr 1.15fr;gap:72px;align-items:start;">
         <div>
           <div style="width:100%;max-width:400px;margin-bottom:40px;">
@@ -588,10 +597,20 @@
               <label style="display:block;font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#AD8A4E;margin-bottom:10px;">{{ t.fNachricht }}</label>
               <textarea rows="3" name="nachricht" placeholder="{{ t.fNachrichtPh }}" style="width:100%;padding:8px 0;border:none;border-bottom:1px solid #D8D2C6;background:none;font-family:Manrope,sans-serif;font-size:16px;color:#43483f;resize:vertical;transition:border-color .2s;"></textarea>
             </div>
+            <div aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;">
+              <label>Website <input type="text" name="website" tabIndex="-1" autoComplete="off" /></label>
+            </div>
+            <div ref="{{ setTurnstile }}" style="display:flex;justify-content:center;margin-bottom:16px;"></div>
             <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
+              <button type="submit" disabled="{{ sending }}" style="background:#DED3C6;border:none;border-radius:6px;padding:17px 30px;cursor:pointer;font-family:Manrope,sans-serif;font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#333a2d;">{{ mailButtonLabel }}</button>
               <button type="button" onClick="{{ sendWhatsApp }}" style="display:inline-flex;align-items:center;gap:10px;background:#4E6257;border:none;border-radius:6px;padding:17px 30px;cursor:pointer;font-family:Manrope,sans-serif;font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#FBFAF6;"><svg viewBox="0 0 24 24" width="16" height="16" fill="#FBFAF6" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.25-8.23 2.2 0 4.27.86 5.83 2.41a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.4-.12-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.06-.39-2.02-1.25-.75-.67-1.25-1.49-1.4-1.74-.14-.25-.01-.39.11-.51.11-.11.25-.29.37-.44.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.73 2.78 4.2 3.79.59.25 1.04.4 1.4.51.59.19 1.12.16 1.55.1.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.23-.17-.48-.29z"/></svg>{{ t.btnWa }}</button>
             </div>
+            <sc-if value="{{ sendError }}" hint-placeholder-val="{{ false }}">
+            <p role="alert" style="margin:16px 0 0;font-size:14px;line-height:1.6;color:#9a4a3c;text-align:center;">{{ t.sendError }} <a href="mailto:silvia@yoursafespace.ch" style="color:inherit;text-decoration:underline;">silvia@yoursafespace.ch</a></p>
+            </sc-if>
+            <sc-if value="{{ noSendError }}" hint-placeholder-val="{{ true }}">
             <p style="margin:16px 0 0;font-size:13px;line-height:1.6;color:#6a6f63;text-align:center;">{{ t.mailNote }} <a href="mailto:silvia@yoursafespace.ch" style="color:#4E6257;text-decoration:underline;">silvia@yoursafespace.ch</a></p>
+            </sc-if>
             <p style="margin:10px 0 0;font-size:12.5px;color:#9a9689;text-align:center;">{{ t.required }}</p>
             <div data-portrait-wrap="1" style="margin-top:130px;text-align:center;">
               <p style="margin:0 0 12px;font-family:'Cormorant Garamond',serif;font-weight:400;font-size:26px;line-height:1.32;letter-spacing:-.005em;color:#333a2d;">{{ t.freueMich }}</p>
@@ -743,6 +762,14 @@
   &quot;radius&quot;: { &quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 0, &quot;min&quot;: 0, &quot;max&quot;: 16, &quot;step&quot;: 1, &quot;unit&quot;: &quot;px&quot;, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Theme&quot; }
 }">
 const SITE = 'https://www.yoursafespace.ch';
+// Public "Bookings with me" page (Silvia's Outlook) for the free 15-minute
+// first call. Microsoft forbids framing it, so the button opens it in a new
+// tab. Leave empty to hide the booking block on the contact page.
+const BOOKINGS_URL = 'https://bookings.cloud.microsoft/bookwithme/user/428e7d7f5bc14b2c8ff77e21f7fc8179@yoursafespace.ch/meetingtype/RWIfT8dfsk6PFTQ7g9SqEQ2?anonymous&ismsaljsauthenabled&ep=mlink';
+// Cloudflare Turnstile site key (public; the secret lives in the Azure app
+// settings as TURNSTILE_SECRET). Widget "Your Safe Space Kontakt".
+const TURNSTILE_SITE_KEY = '0x4AAAAAAGFJGq_u2eaPGf2z';
+
 const PAGES = ['home', 'angebote', 'ueber', 'konditionen', 'kontakt', 'impressum', 'disclaimer'];
 const pagePath = (lang, page) => '/' + lang + '/' + (page === 'home' ? '' : page);
 const SEO = {
@@ -751,7 +778,7 @@ const SEO = {
     angebote:    ['Angebot: Einzel-, Paar- & Beziehungsberatung Zürich | Your Safe Space', 'Einzelberatung für Erwachsene, Paar- und Beziehungsberatung sowie Begleitung, wenn ein Kind alles verändert – vor Ort in Zürich oder online.'],
     ueber:       ['Über mich – Silvia Soret | Your Safe Space Zürich', 'Silvia Soret: Werdegang, Ausbildung und Haltung hinter Your Safe Space, der psychologischen Beratung in der Zürcher Altstadt.'],
     konditionen: ['Konditionen & Preise – Psychologische Beratung Zürich | Your Safe Space', 'Preise, Sitzungsdauer, Absage- und Zahlungsbedingungen für Einzel- und Paarberatung bei Your Safe Space in Zürich.'],
-    kontakt:     ['Kontakt & Termin anfragen | Your Safe Space Zürich', 'Termin für psychologische Beratung anfragen: Stüssihofstatt 7, 8001 Zürich – per WhatsApp oder E-Mail an Silvia Soret.'],
+    kontakt:     ['Kontakt & Termin anfragen | Your Safe Space Zürich', 'Kurzes Erstgespräch direkt online buchen oder einen Termin für psychologische Beratung anfragen: Stüssihofstatt 7, 8001 Zürich – per WhatsApp oder E-Mail an Silvia Soret.'],
     impressum:   ['Impressum & Datenschutz | Your Safe Space', 'Impressum und Datenschutzerklärung von Your Safe Space – Silvia Soret, Zürich.'],
     disclaimer:  ['Disclaimer | Your Safe Space', 'Rechtliche Hinweise und Haftungsausschluss von Your Safe Space – Silvia Soret, Zürich.'],
   },
@@ -760,7 +787,7 @@ const SEO = {
     angebote:    ['Services: Individual, Couples & Relationship Counselling Zurich | Your Safe Space', 'Individual counselling for adults, couples and relationship counselling, and support when a baby changes everything – in Zurich or online.'],
     ueber:       ['About me – Silvia Soret | Your Safe Space Zurich', 'Silvia Soret: background, training and approach behind Your Safe Space, psychological counselling in Zurich\'s old town.'],
     konditionen: ['Fees & Terms – Counselling in Zurich | Your Safe Space', 'Fees, session length, cancellation and payment terms for individual and couples counselling at Your Safe Space in Zurich.'],
-    kontakt:     ['Contact & Book a Session | Your Safe Space Zurich', 'Request a counselling session: Stüssihofstatt 7, 8001 Zurich – via WhatsApp or e-mail to Silvia Soret.'],
+    kontakt:     ['Contact & Book a Session | Your Safe Space Zurich', 'Book a short first call online or request a counselling session: Stüssihofstatt 7, 8001 Zurich – via WhatsApp or e-mail to Silvia Soret.'],
     impressum:   ['Legal Notice & Privacy | Your Safe Space', 'Legal notice and privacy policy of Your Safe Space – Silvia Soret, Zurich.'],
     disclaimer:  ['Disclaimer | Your Safe Space', 'Legal disclaimer of Your Safe Space – Silvia Soret, Zurich.'],
   },
@@ -769,14 +796,14 @@ const SEO = {
     angebote:    ['Offre : conseil individuel, de couple et relationnel à Zurich | Your Safe Space', 'Conseil individuel pour adultes, conseil de couple et relationnel, accompagnement quand un enfant change tout – à Zurich ou en ligne.'],
     ueber:       ['À propos – Silvia Soret | Your Safe Space Zurich', 'Silvia Soret : parcours, formation et approche derrière Your Safe Space, conseil psychologique dans la vieille ville de Zurich.'],
     konditionen: ['Tarifs & conditions – Conseil psychologique Zurich | Your Safe Space', 'Tarifs, durée des séances, conditions d\'annulation et de paiement pour le conseil individuel et de couple à Zurich.'],
-    kontakt:     ['Contact & prise de rendez-vous | Your Safe Space Zurich', 'Demander un rendez-vous : Stüssihofstatt 7, 8001 Zurich – par WhatsApp ou e-mail à Silvia Soret.'],
+    kontakt:     ['Contact & prise de rendez-vous | Your Safe Space Zurich', 'Réserver un court premier entretien en ligne ou demander un rendez-vous : Stüssihofstatt 7, 8001 Zurich – par WhatsApp ou e-mail à Silvia Soret.'],
     impressum:   ['Mentions légales & confidentialité | Your Safe Space', 'Mentions légales et politique de confidentialité de Your Safe Space – Silvia Soret, Zurich.'],
     disclaimer:  ['Avertissement juridique | Your Safe Space', 'Avertissement juridique de Your Safe Space – Silvia Soret, Zurich.'],
   },
 };
 
 class Component extends DCLogic {
-  state = { page: 'home', sent: false, menuOpen: false };
+  state = { page: 'home', sent: false, sending: false, sendError: false, menuOpen: false };
 
   componentDidMount(){
     this.applyVars();
@@ -838,6 +865,69 @@ class Component extends DCLogic {
       ['Nachricht', v('nachricht')],
     ].filter(([, val]) => val);
     return 'Terminanfrage über yoursafespace.ch\n\n' + rows.map(([k, val]) => k + ': ' + val).join('\n');
+  }
+
+  enquiryFields(){
+    const f = this.form.elements;
+    const v = (n) => (f[n] ? f[n].value : '');
+    return {
+      vorname: v('vorname'), nachname: v('nachname'), email: v('email'), telefon: v('telefon'),
+      waOk: !!(f.wa_ok && f.wa_ok.checked), sprache: v('sprache'), format: v('format'),
+      tag: v('tag'), nachricht: v('nachricht'), website: v('website'),
+      elapsedMs: Date.now() - (this.formStart || Date.now()),
+    };
+  }
+
+  // Turnstile is only loaded once the contact form is on screen, so other
+  // pages never contact Cloudflare.
+  renderTurnstile(el){
+    const render = () => {
+      if (this.tsEl !== el) return;
+      this.tsWidget = window.turnstile.render(el, {
+        sitekey: TURNSTILE_SITE_KEY,
+        appearance: 'interaction-only',
+        language: (this.state.lang || 'DE').toLowerCase(),
+      });
+    };
+    if (window.turnstile) return render();
+    let s = document.getElementById('cf-turnstile-js');
+    if (!s) {
+      s = document.createElement('script');
+      s.id = 'cf-turnstile-js';
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      s.async = true;
+      document.head.appendChild(s);
+    }
+    s.addEventListener('load', render);
+  }
+
+  // The invisible check usually finishes within a second of the form
+  // appearing; wait briefly for it rather than failing a quick submit.
+  async turnstileToken(){
+    for (let i = 0; i < 20; i++) {
+      const token = window.turnstile && this.tsWidget !== undefined ? window.turnstile.getResponse(this.tsWidget) : '';
+      if (token) return token;
+      await new Promise(r => setTimeout(r, 250));
+    }
+    return '';
+  }
+
+  async sendEmail(){
+    if (this.state.sending || this.buildEnquiry() === null) return;
+    this.setState({ sending: true, sendError: false });
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...this.enquiryFields(), turnstileToken: await this.turnstileToken() }),
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      this.setState({ sending: false, sent: true });
+    } catch (e) {
+      // Tokens are single-use: get a fresh one for the next attempt.
+      if (window.turnstile && this.tsWidget !== undefined) window.turnstile.reset(this.tsWidget);
+      this.setState({ sending: false, sendError: true });
+    }
   }
 
   applyVars(){
@@ -999,7 +1089,7 @@ class Component extends DCLogic {
   texts(){
     const de = {
       navHome:"Startseite", navAngebot:"Angebot", navUeber:"Über mich", navKond:"Konditionen", navKontakt:"Kontakt",
-      availNote:"Aktuell verfügbare Plätze", availCta:"Anfragen",
+      stickerTop:"Aktuell freie Plätze", stickerMain:"Buche dein kostenloses Erstgespräch",
       tagline:"Psychologische Beratung für Erwachsene & Paare", byLine:"von Silvia Soret",
       taglineA:"Psychologische Beratung", taglineB:"für Erwachsene & Paare",
       heroTitle:"Wo du dich fallen lässt\u00a0– und dich selbst findest.",
@@ -1080,8 +1170,13 @@ class Component extends DCLogic {
       fTag:"Bevorzugter Tag", fTagPh:"z. B. Mittwochnachmittag",
       fNachricht:"Deine Nachricht", fNachrichtPh:"Was bewegt dich? Was wünschst du dir?",
       btnMail:"Per E-Mail senden", btnWa:"Per WhatsApp", required:"* Pflichtfelder",
+      btnSending:"Wird gesendet …", sendError:"Das hat leider nicht geklappt. Bitte schreib mir direkt an",
       mailNote:"Lieber per E-Mail? Schreib mir direkt an",
       freueMich:"Ich freue mich auf dich, Silvia",
+      bookEyebrow:"Kostenloses Erstgespräch", bookTitle:"15 Minuten zum Kennenlernen",
+      bookText:"Ein kurzes, kostenloses und unverbindliches Gespräch, um zu schauen, ob wir zusammenpassen. Wähle einfach einen freien Termin aus.",
+      bookBtn:"Freie Termine anzeigen",
+      bookNote:"Die Terminbuchung öffnet sich in einem neuen Fenster (Microsoft Bookings). Bitte keine Gesundheitsangaben ins Notizfeld.",
       thanks:"Danke.", sentTitle:"Deine Nachricht ist angekommen.",
       sentText:"Ich melde mich so bald wie möglich bei dir – meist innerhalb von zwei Werktagen. Bis dahin: Sei gut zu dir.",
       notfall:"Your Safe Space ist kein Notfalldienst. Bei akuten psychischen Krisen wende dich bitte an die Dargebotene Hand (Tel. 143) oder den ärztlichen Notfalldienst des Kt. Zürichs 24/7 (Tel. 0800 33 66 55).",
@@ -1125,7 +1220,7 @@ class Component extends DCLogic {
 
     const fr = {
       navHome:"Accueil", navAngebot:"Prestation", navUeber:"À propos", navKond:"Tarifs", navKontakt:"Contact",
-      availNote:"Actuellement places disponible", availCta:"Demander",
+      stickerTop:"Disponibilités immédiates", stickerMain:"Prenez rendez-vous pour un premier contact gratuit.",
       tagline:"Conseil psychologique pour adultes et couples", byLine:"par Silvia Soret",
       taglineA:"Conseil psychologique", taglineB:"pour adultes et couples",
       heroTitle:"Là où vous lâchez prise – et où vous vous retrouvez.",
@@ -1206,8 +1301,13 @@ class Component extends DCLogic {
       fTag:"Jour préféré", fTagPh:"p. ex. mercredi après-midi",
       fNachricht:"Votre message", fNachrichtPh:"Qu'est-ce qui vous préoccupe ? Que souhaitez-vous ?",
       btnMail:"Envoyer par e-mail", btnWa:"Par WhatsApp", required:"* Champs obligatoires",
+      btnSending:"Envoi en cours …", sendError:"Désolée, l'envoi n'a pas fonctionné. Écrivez-moi directement à",
       mailNote:"Vous préférez l'e-mail ? Écrivez-moi directement à",
       freueMich:"Au plaisir de vous rencontrer, Silvia",
+      bookEyebrow:"Premier entretien gratuit", bookTitle:"15 minutes pour faire connaissance",
+      bookText:"Un court échange gratuit et sans engagement, pour voir si nous sommes faits pour travailler ensemble. Choisissez simplement un créneau libre.",
+      bookBtn:"Voir les créneaux libres",
+      bookNote:"La réservation s'ouvre dans une nouvelle fenêtre (Microsoft Bookings). Merci de ne pas indiquer d'informations de santé dans le champ de notes.",
       thanks:"Merci.", sentTitle:"Votre message est bien arrivé.",
       sentText:"Je vous réponds dès que possible – en général dans les deux jours ouvrables. D'ici là : prenez soin de vous.",
       notfall:"Your Safe Space n'est pas un service d'urgence. En cas de crise psychique aiguë, veuillez vous adresser à La Main Tendue (tél. 143) ou au service d'urgence médicale du canton de Zurich, 24h/24 (tél. 0800 33 66 55).",
@@ -1251,7 +1351,7 @@ class Component extends DCLogic {
 
     const en = {
       navHome:"Home", navAngebot:"Services", navUeber:"About me", navKond:"Fees", navKontakt:"Contact",
-      availNote:"Places currently available", availCta:"Enquire",
+      stickerTop:"Currently accepting new clients", stickerMain:"Book your free discovery\u00a0call",
       tagline:"Psychological counselling for adults and couples", byLine:"by Silvia Soret",
       taglineA:"Psychological counselling", taglineB:"for adults and couples",
       heroTitle:"Where you can let go – and find yourself.",
@@ -1332,8 +1432,13 @@ class Component extends DCLogic {
       fTag:"Preferred day", fTagPh:"e.g. Wednesday afternoon",
       fNachricht:"Your message", fNachrichtPh:"What is on your mind? What do you wish for?",
       btnMail:"Send by e-mail", btnWa:"Via WhatsApp", required:"* Required fields",
+      btnSending:"Sending …", sendError:"Sorry, that didn't go through. Please write to me directly at",
       mailNote:"Prefer e-mail? Write to me directly at",
       freueMich:"I look forward to meeting you, Silvia",
+      bookEyebrow:"Free first call", bookTitle:"15 minutes to get to know each other",
+      bookText:"A short, free, no-obligation call to see whether we are a good fit. Just pick a free slot.",
+      bookBtn:"Show free slots",
+      bookNote:"Booking opens in a new window (Microsoft Bookings). Please don't put any health details in the notes field.",
       thanks:"Thank you.", sentTitle:"Your message has arrived.",
       sentText:"I will get back to you as soon as possible – usually within two working days. Until then: be kind to yourself.",
       notfall:"Your Safe Space is not an emergency service. In an acute psychological crisis please contact Die Dargebotene Hand (tel. 143) or the medical emergency service of the Canton of Zurich, 24/7 (tel. 0800 33 66 55).",
@@ -1467,7 +1572,7 @@ class Component extends DCLogic {
       { n:'05', title:'Hosting & Server-Log-Dateien', text:'Diese Website wird bei Novatrend Services GmbH (Schweiz) gehostet. Der Provider erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien, die Ihr Browser übermittelt:\n\n– Browsertyp und Browserversion\n– verwendetes Betriebssystem\n– Referrer-URL\n– Hostname des zugreifenden Rechners\n– Zeitpunkt der Serveranfrage\n\nDiese Daten werden zu statistischen Zwecken und zur Sicherstellung des störungsfreien Betriebs gespeichert und sind nicht bestimmten Personen zuordenbar. Eine Zusammenführung mit anderen Datenquellen findet nicht statt. Ich behalte mir vor, diese Daten nachträglich zu prüfen, wenn konkrete Anhaltspunkte für eine rechtswidrige Nutzung bestehen. Datenschutzerklärung des Providers: novatrend.ch/de/datenschutz' },
       { n:'06', title:'Kontaktformular', text:'Wenn Sie mir über das Kontaktformular eine Anfrage senden, werden Ihre Angaben aus dem Formular inklusive der dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen gespeichert. Diese Daten gebe ich nicht ohne Ihre Einwilligung weiter. Die Daten werden gelöscht, sobald sie für den Zweck nicht mehr erforderlich sind und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.' },
       { n:'07', title:'Kontakt per E-Mail und WhatsApp', text:'Wenn Sie mich per E-Mail oder über WhatsApp kontaktieren, werden die von Ihnen übermittelten Angaben (Name, E-Mail-Adresse bzw. Mobilnummer, Inhalt der Nachricht) zur Bearbeitung Ihres Anliegens verarbeitet.\n\nWhatsApp ist ein Dienst der WhatsApp Ireland Limited, 4 Grand Canal Square, Dublin 2, Irland. Bei der Nutzung von WhatsApp können Daten – insbesondere Metadaten wie Mobilnummer, Zeitpunkt und Häufigkeit der Kommunikation – durch WhatsApp verarbeitet und teilweise auf Servern ausserhalb der Schweiz und der EU bearbeitet werden. Auf diese Verarbeitung habe ich keinen Einfluss. Wenn Sie das nicht wünschen, nutzen Sie bitte E-Mail oder das Kontaktformular.' },
-      { n:'08', title:'Terminvereinbarung & Rechnungsstellung', text:'Für die Vereinbarung von Terminen und die Rechnungsstellung verarbeite ich die dafür notwendigen Daten (Name, Kontaktdaten, Termin- und Rechnungsangaben). Rechnungs- und Buchhaltungsunterlagen bewahre ich während der gesetzlichen Aufbewahrungsfrist von zehn Jahren auf.' },
+      { n:'08', title:'Terminvereinbarung & Rechnungsstellung', text:'Für die Vereinbarung von Terminen und die Rechnungsstellung verarbeite ich die dafür notwendigen Daten (Name, Kontaktdaten, Termin- und Rechnungsangaben). Rechnungs- und Buchhaltungsunterlagen bewahre ich während der gesetzlichen Aufbewahrungsfrist von zehn Jahren auf.\n\nFür die Online-Buchung des Erstgesprächs nutze ich Microsoft Bookings, einen Dienst der Microsoft Ireland Operations Limited, One Microsoft Place, South County Business Park, Leopardstown, Dublin 18, Irland. Die Buchungsseite ist eine Seite von Microsoft und öffnet sich erst, wenn Sie auf «Freie Termine anzeigen» klicken. Bei einer Buchung werden die von Ihnen eingegebenen Angaben (Name, E-Mail-Adresse, ggf. Telefonnummer und Notiz) sowie der gewählte Termin an Microsoft übermittelt und in meinem Microsoft-365-Konto gespeichert; eine Bearbeitung ausserhalb der Schweiz und der EU kann nicht ausgeschlossen werden. Bitte geben Sie bei der Buchung keine Gesundheitsangaben an. Datenschutzerklärung von Microsoft: privacy.microsoft.com' },
       { n:'09', title:'Schriften (Google Fonts)', text:'Diese Website verwendet Schriften des Dienstes Google Fonts (Google Ireland Limited). Zur Darstellung der Schriften stellt Ihr Browser eine Verbindung zu einem Google-Server her und lädt die benötigte Schriftdatei. Dadurch erhält Google die Information, dass diese Website über Ihre IP-Adresse aufgerufen wurde. Weitere Informationen: policies.google.com/privacy' },
       { n:'10', title:'Online-Beratung per Videokonferenz', text:'Für Beratungen auf Distanz können Audio- und Videokonferenzdienste eingesetzt werden. Ich nutze dafür nur Dienste, für die ein angemessenes Datenschutzniveau gewährleistet ist. Neben dieser Datenschutzerklärung gelten die Nutzungs- und Datenschutzbestimmungen des jeweiligen Dienstes. Gespräche werden nicht aufgezeichnet.' },
       { n:'11', title:'Cookies', text:'Diese Website setzt keine Cookies zu Analyse- oder Werbezwecken ein. Es findet kein Tracking und keine Erstellung von Nutzungsprofilen statt. Es werden keine Analyse- oder Marketingdienste (z. B. Google Analytics, Google Ads, Social-Media-Pixel) verwendet.' },
@@ -1510,14 +1615,29 @@ class Component extends DCLogic {
       goHome: (e) => this.linkClick(e, () => this.go('home')),
       goHomeHref: pagePath(lang.toLowerCase(), 'home'),
       goKontakt: () => this.go('kontakt'),
+      // The sticker opens Silvia's Bookings page directly (new tab); without a
+      // BOOKINGS_URL it falls back to the contact page.
+      goBooking: () => { if (BOOKINGS_URL) { window.open(BOOKINGS_URL, '_blank', 'noopener'); } else { this.go('kontakt'); } },
       monthLabel: (() => { const m=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']; return m[new Date().getMonth()]; })(),
       nextMonthLabel: (() => { const m=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']; return m[(new Date().getMonth()+1)%12]; })(),
       goAngebote: () => this.go('angebote'),
+      hasBooking: !!BOOKINGS_URL,
+      bookingUrl: BOOKINGS_URL,
       sent: this.state.sent,
       notSent: !this.state.sent,
-      // No submit button: WhatsApp is the only send path. This only catches
-      // implicit submission (Enter in a text field), which must not navigate.
-      onSubmit: (e) => { e.preventDefault(); },
+      sending: this.state.sending,
+      sendError: this.state.sendError,
+      noSendError: !this.state.sendError,
+      mailButtonLabel: this.state.sending ? t.btnSending : t.btnMail,
+      onSubmit: (e) => { e.preventDefault(); this.sendEmail(); },
+      // Ref callbacks are recreated every render, so React calls them with
+      // null and then the same element again; only a new element counts.
+      setTurnstile: (el) => {
+        if (!el || el === this.tsEl) return;
+        this.tsEl = el;
+        this.tsWidget = undefined;
+        this.renderTurnstile(el);
+      },
       langs: ['DE','FR','EN'].map(code => ({
         label: code,
         href: pagePath(code.toLowerCase(), page),
@@ -1537,7 +1657,10 @@ class Component extends DCLogic {
           textDecoration:'none',
         },
       })),
-      setForm: (el) => { this.form = el; },
+      setForm: (el) => {
+        if (el && el !== this.form) this.formStart = Date.now();
+        if (el) this.form = el;
+      },
       sendWhatsApp: () => {
         const text = this.buildEnquiry();
         if (text === null) return;
