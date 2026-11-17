@@ -767,8 +767,8 @@ const SITE = 'https://www.yoursafespace.ch';
 // tab. Leave empty to hide the booking block on the contact page.
 const BOOKINGS_URL = 'https://bookings.cloud.microsoft/bookwithme/user/428e7d7f5bc14b2c8ff77e21f7fc8179@yoursafespace.ch/meetingtype/RWIfT8dfsk6PFTQ7g9SqEQ2?anonymous&ismsaljsauthenabled&ep=mlink';
 // Cloudflare Turnstile site key (public; the secret lives in the Azure app
-// settings). This is Cloudflare's always-pass test key: swap in the real one.
-const TURNSTILE_SITE_KEY = '1x00000000000000000000AA';
+// settings as TURNSTILE_SECRET). Widget "Your Safe Space Kontakt".
+const TURNSTILE_SITE_KEY = '0x4AAAAAAGFJGq_u2eaPGf2z';
 
 const PAGES = ['home', 'angebote', 'ueber', 'konditionen', 'kontakt', 'impressum', 'disclaimer'];
 const pagePath = (lang, page) => '/' + lang + '/' + (page === 'home' ? '' : page);
