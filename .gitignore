@@ -45,3 +45,5 @@ assets/yss-logo.png
 # Build output of tools/prerender
 dist/
 node_modules/
+# Azure Functions dependencies (installed by the deploy build)
+api/node_modules/
